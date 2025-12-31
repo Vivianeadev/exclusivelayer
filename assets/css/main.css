@@ -1,0 +1,107 @@
+/* Reset e configurações globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+  background: var(--background-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  color: var(--text-primary);
+  transition: var(--transition);
+  font-weight: 300;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 20% 80%, rgb(212 175 55/.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgb(244 228 184/.1) 0%, transparent 50%),
+              radial-gradient(circle at 40% 40%, rgb(184 134 11/.05) 0%, transparent 50%);
+  z-index: -1;
+  animation: backgroundShift 20s ease-in-out infinite alternate;
+}
+
+/* Animações principais */
+@keyframes backgroundShift {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.1) rotate(3deg); }
+}
+
+@keyframes containerEntrance {
+  0% { opacity: 0; transform: translateY(60px) scale(.95); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-30px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Classes utilitárias */
+.hidden {
+  display: none !important;
+}
+
+.fade-out {
+  animation: fadeOut 0.8s cubic-bezier(.25,.46,.45,.94) both;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s 0.3s cubic-bezier(.25,.46,.45,.94) both;
+}
+
+.animate-element {
+  animation: fadeInUp 0.8s cubic-bezier(.25,.46,.45,.94) both;
+}
+
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+
+.message-sent {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.message-received {
+  animation: slideInLeft 0.3s ease-out;
+}
