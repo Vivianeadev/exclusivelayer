@@ -1,10 +1,13 @@
-// EXCLUSIVE WALLET PREMIUM - AGENDA SYSTEM
+// ======================================================
+// SISTEMA DE AGENDA PREMIUM
+// ======================================================
 
 const agendaSystem = {
   currentDate: new Date(),
   selectedDate: new Date(),
   events: JSON.parse(localStorage.getItem('exclusiveWalletAgenda') || '{}'),
 
+  // Inicializar o sistema de agenda
   init() {
     this.renderCalendar();
     this.renderEvents();
@@ -12,6 +15,7 @@ const agendaSystem = {
     this.bindEvents();
   },
 
+  // Vincular eventos aos botões
   bindEvents() {
     const prevMonthBtn = document.getElementById('prevMonth');
     const nextMonthBtn = document.getElementById('nextMonth');
@@ -24,6 +28,7 @@ const agendaSystem = {
     if (exportPDFBtn) exportPDFBtn.addEventListener('click', () => this.exportToPDF());
   },
 
+  // Renderizar o calendário
   renderCalendar() {
     const calendarGrid = document.getElementById('calendarGrid');
     if (!calendarGrid) return;
@@ -43,6 +48,7 @@ const agendaSystem = {
 
     calendarGrid.innerHTML = '';
 
+    // Adicionar cabeçalho dos dias da semana
     const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
     daysOfWeek.forEach(day => {
       const dayElement = document.createElement('div');
@@ -56,10 +62,12 @@ const agendaSystem = {
       calendarGrid.appendChild(dayElement);
     });
 
+    // Calcular primeiro e último dia do mês
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const firstDayOfWeek = firstDay.getDay();
 
+    // Adicionar dias vazios antes do primeiro dia
     for (let i = 0; i < firstDayOfWeek; i++) {
       const emptyDay = document.createElement('div');
       emptyDay.className = 'agenda-day';
@@ -67,6 +75,7 @@ const agendaSystem = {
       calendarGrid.appendChild(emptyDay);
     }
 
+    // Adicionar os dias do mês
     for (let day = 1; day <= lastDay.getDate(); day++) {
       const dayElement = document.createElement('div');
       dayElement.className = 'agenda-day';
@@ -80,8 +89,10 @@ const agendaSystem = {
         dayElement.classList.add('selected');
       }
 
+      // Evento de clique no dia
       dayElement.onclick = () => this.selectDate(year, month, day);
 
+      // Número do dia
       const dayNumber = document.createElement('div');
       dayNumber.className = 'agenda-day-number';
       dayNumber.textContent = day;
@@ -94,6 +105,7 @@ const agendaSystem = {
 
       dayElement.appendChild(dayNumber);
 
+      // Adicionar eventos do dia
       const dateKey = `${year}-${month + 1}-${day}`;
       if (this.events[dateKey]) {
         this.events[dateKey].forEach(event => {
@@ -109,6 +121,7 @@ const agendaSystem = {
     }
   },
 
+  // Selecionar uma data
   selectDate(year, month, day) {
     this.selectedDate = new Date(year, month, day);
     this.renderCalendar();
@@ -117,16 +130,19 @@ const agendaSystem = {
     showNotification(`Data ${day}/${month + 1}/${year} selecionada`, 'info');
   },
 
+  // Mês anterior
   prevMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.renderCalendar();
   },
 
+  // Próximo mês
   nextMonth() {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
     this.renderCalendar();
   },
 
+  // Atualizar data no formulário
   updateFormDate() {
     const dateInput = document.getElementById('eventDate');
     if (!dateInput) return;
@@ -137,6 +153,7 @@ const agendaSystem = {
     dateInput.value = `${year}-${month}-${day}`;
   },
 
+  // Adicionar evento
   addEvent() {
     const title = document.getElementById('eventTitle').value.trim();
     const date = document.getElementById('eventDate').value;
@@ -166,6 +183,7 @@ const agendaSystem = {
     this.events[dateKey].push(event);
     this.saveEvents();
 
+    // Limpar formulário
     document.getElementById('eventTitle').value = '';
     document.getElementById('eventTime').value = '';
     document.getElementById('eventDescription').value = '';
@@ -175,6 +193,7 @@ const agendaSystem = {
     showNotification('Evento adicionado com sucesso!', 'success');
   },
 
+  // Remover evento
   deleteEvent(eventId) {
     for (const dateKey in this.events) {
       this.events[dateKey] = this.events[dateKey].filter(event => event.id !== eventId);
@@ -188,12 +207,14 @@ const agendaSystem = {
     showNotification('Evento removido com sucesso!', 'success');
   },
 
+  // Renderizar lista de eventos
   renderEvents() {
     const eventsList = document.getElementById('eventsList');
     if (!eventsList) return;
 
     eventsList.innerHTML = '';
 
+    // Coletar todos os eventos
     const allEvents = [];
     for (const dateKey in this.events) {
       this.events[dateKey].forEach(event => {
@@ -204,8 +225,10 @@ const agendaSystem = {
       });
     }
 
+    // Ordenar por data e hora
     allEvents.sort((a, b) => new Date(a.date + 'T' + (a.time || '00:00')) - new Date(b.date + 'T' + (b.time || '00:00')));
 
+    // Mostrar mensagem se não houver eventos
     if (allEvents.length === 0) {
       eventsList.innerHTML = `
         <div style="text-align: center; color: var(--text-secondary); padding: 20px;">
@@ -216,6 +239,7 @@ const agendaSystem = {
       return;
     }
 
+    // Renderizar cada evento
     allEvents.forEach(event => {
       const eventDate = new Date(event.date);
       const formattedDate = eventDate.toLocaleDateString('pt-BR', {
@@ -258,16 +282,19 @@ const agendaSystem = {
     });
   },
 
+  // Salvar eventos no localStorage
   saveEvents() {
     localStorage.setItem('exclusiveWalletAgenda', JSON.stringify(this.events));
   },
 
+  // Verificar se duas datas são iguais
   isSameDate(date1, date2) {
     return date1.getFullYear() === date2.getFullYear() &&
            date1.getMonth() === date2.getMonth() &&
            date1.getDate() === date2.getDate();
   },
 
+  // Exportar agenda para PDF
   exportToPDF() {
     const { jsPDF } = window.jspdf;
     if (!jsPDF) {
@@ -284,7 +311,112 @@ const agendaSystem = {
         format: 'a4'
       });
       
+      // Cabeçalho
       doc.setFillColor(26, 26, 26);
       doc.rect(0, 0, 210, 40, 'F');
       doc.setTextColor(212, 175, 55);
-      doc.setFont('helvetica
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(24);
+      doc.text('Exclusive Wallet Premium - Agenda', 105, 20, { align: 'center' });
+      
+      doc.setFontSize(11);
+      doc.setTextColor(240, 240, 240);
+      const exportDate = new Date().toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      doc.text(`Exportado em ${exportDate}`, 105, 30, { align: 'center' });
+      
+      // Conteúdo
+      let y = 50;
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(0, 0, 0);
+      
+      const hasEvents = Object.keys(this.events).length > 0;
+      
+      if (!hasEvents) {
+        doc.setFontSize(14);
+        doc.setTextColor(128, 128, 128);
+        doc.text('Nenhum evento na agenda', 105, 100, { align: 'center' });
+      } else {
+        for (const dateKey in this.events) {
+          if (this.events[dateKey].length > 0) {
+            const eventDate = new Date(dateKey);
+            const formattedDate = eventDate.toLocaleDateString('pt-BR', {
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric'
+            });
+            
+            doc.setFontSize(14);
+            doc.setTextColor(212, 175, 55);
+            doc.text(`📅 ${formattedDate}`, 20, y);
+            y += 8;
+            
+            doc.setDrawColor(212, 175, 55);
+            doc.setLineWidth(0.5);
+            doc.line(20, y - 2, 190, y - 2);
+            y += 4;
+            
+            this.events[dateKey].forEach(event => {
+              doc.setFontSize(11);
+              doc.setTextColor(26, 26, 26);
+              
+              const timePrefix = event.time ? `🕐 ${event.time} - ` : '';
+              doc.text(`• ${timePrefix}${event.title}`, 25, y);
+              y += 6;
+              
+              if (event.description) {
+                doc.setFontSize(9);
+                doc.setTextColor(85, 85, 85);
+                
+                const maxWidth = 160;
+                const lines = doc.splitTextToSize(event.description, maxWidth);
+                
+                lines.forEach(line => {
+                  doc.text(`  ${line}`, 28, y);
+                  y += 5;
+                });
+              }
+              y += 4;
+            });
+            y += 8;
+          }
+          
+          if (y > 270) {
+            doc.addPage();
+            y = 20;
+          }
+        }
+      }
+      
+      // Rodapé
+      doc.setFontSize(8);
+      doc.setTextColor(128, 128, 128);
+      doc.text('Documento gerado automaticamente pelo Exclusive Wallet Premium', 105, 287, { align: 'center' });
+      doc.text('© 2025 Sistema Polygon com RPC Infra AVZ', 105, 292, { align: 'center' });
+      
+      const fileName = `agenda-exclusive-wallet-${new Date().toISOString().slice(0, 10)}.pdf`;
+      doc.save(fileName);
+      
+      showNotification(`Agenda exportada como ${fileName}`, 'success');
+      
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      showNotification('Erro ao gerar PDF: ' + error.message, 'error');
+    }
+  }
+};
+
+// Função para inicializar agenda quando a aba for ativada
+function initializeAgenda() {
+  setTimeout(() => {
+    if (document.getElementById('agendaTab') && 
+        !document.getElementById('agendaTab').classList.contains('hidden')) {
+      agendaSystem.init();
+    }
+  }, 100);
+}
