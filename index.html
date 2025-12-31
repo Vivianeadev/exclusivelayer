@@ -21,35 +21,167 @@
 </head>
 <body class="theme-luxury">
   
-  <!-- ⚠️ COLE AQUI TODO O CONTEÚDO DO SEU SITE ⚠️ -->
-  <!-- Exemplo mínimo para testar: -->
-  
-  <div class="container">
+  <!-- CONTEÚDO DO SITE (ISSO FALTA NO SEU) -->
+  <div class="wallet-container">
     <header>
-      <h1><i class="fas fa-crown"></i> Exclusive Wallet Premium</h1>
-      <p>Sistema Polygon com RPC Infra Identity</p>
-    </header>
-    
-    <main>
-      <div class="card">
-        <h2>🚀 Bem-vindo ao Sistema</h2>
-        <p>Conecte sua wallet para começar:</p>
-        <button id="connectWallet" class="btn-primary">
-          <i class="fas fa-wallet"></i> Conectar Wallet
+      <div class="logo">
+        <h1>EXCLUSIVE WALLET</h1>
+        <span>PREMIUM SYSTEM</span>
+      </div>
+      <div class="theme-controls">
+        <button class="theme-toggle-btn">
+          <i class="fas fa-moon"></i> Tema Escuro
         </button>
       </div>
-      
-      <div class="card">
-        <h3>Status do Sistema</h3>
-        <p id="status">Aguardando conexão...</p>
+    </header>
+
+    <div class="wallet-header">
+      <h2>Sistema Polygon com RPC Infra Identity</h2>
+      <p>Gerencie suas criptomoedas, autorizações e comunicações em um único lugar seguro</p>
+    </div>
+
+    <div class="chain-selector">
+      <button class="chain-button active">Polygon</button>
+      <button class="chain-button">Ethereum</button>
+      <button class="chain-button">BNB Chain</button>
+      <button class="chain-button">Avalanche</button>
+    </div>
+
+    <div class="balance-main-container">
+      <div class="balance-display">$0.00</div>
+      <div class="balance-label">Saldo Total</div>
+      <div class="balance-brl">R$ 0,00</div>
+      <div class="qr-container" id="qrCode"></div>
+    </div>
+
+    <div class="tab-navigation">
+      <button class="tab-button active" data-tab="wallet">
+        <i class="fas fa-wallet"></i> Carteira
+      </button>
+      <button class="tab-button" data-tab="tokens">
+        <i class="fas fa-coins"></i> Tokens
+      </button>
+      <button class="tab-button" data-tab="communication">
+        <i class="fas fa-comments"></i> Comunicação
+      </button>
+      <button class="tab-button" data-tab="agenda">
+        <i class="fas fa-calendar-alt"></i> Agenda
+      </button>
+      <button class="tab-button" data-tab="authorizations">
+        <i class="fas fa-shield-alt"></i> Autorizações
+      </button>
+    </div>
+
+    <div class="tab-content active" id="wallet-tab">
+      <div class="wallet-operations-grid">
+        <button class="action-btn">
+          <i class="fas fa-paper-plane"></i>
+          <span>Enviar</span>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-download"></i>
+          <span>Receber</span>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-exchange-alt"></i>
+          <span>Trocar</span>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-history"></i>
+          <span>Histórico</span>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-lock"></i>
+          <span>Segurança</span>
+        </button>
+        <button class="action-btn">
+          <i class="fas fa-cog"></i>
+          <span>Configurações</span>
+        </button>
       </div>
-    </main>
-    
-    <footer>
-      <p>© 2025 Exclusive Layer - Sistema Premium</p>
-    </footer>
+
+      <div class="address-display" id="walletAddress">
+        0x0000000000000000000000000000000000000000
+      </div>
+
+      <button class="btn btn-primary" id="connectWalletBtn">
+        <i class="fas fa-plug"></i> Conectar Wallet
+      </button>
+    </div>
+
+    <div class="tab-content" id="tokens-tab">
+      <div class="tokens-grid">
+        <div class="token-card-luxury">
+          <div class="token-card-header">
+            <div class="token-symbol-luxury">MATIC</div>
+            <div class="token-icon-luxury">M</div>
+          </div>
+          <div class="token-balance-luxury">0.00</div>
+          <div class="token-value-luxury">$0.00</div>
+          <div class="token-value-brl">R$ 0,00</div>
+          <div class="token-actions-luxury">
+            <button class="btn btn-small btn-primary">Enviar</button>
+            <button class="btn btn-small btn-secondary">Receber</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="communication-tab">
+      <div class="communication-main-container">
+        <div class="communication-badges">
+          <div class="communication-badge unlocked">
+            <i class="fas fa-check-circle"></i>
+            <span>Chat Privado</span>
+          </div>
+          <div class="communication-badge">
+            <i class="fas fa-video"></i>
+            <span>Chamada de Vídeo</span>
+          </div>
+          <div class="communication-badge">
+            <i class="fas fa-users"></i>
+            <span>Grupos</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="agenda-tab">
+      <div class="agenda-container">
+        <div class="agenda-header">
+          <div class="agenda-month-title">Março 2024</div>
+          <div class="agenda-month-nav">
+            <button class="btn-small"><i class="fas fa-chevron-left"></i></button>
+            <button class="btn-small"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content" id="authorizations-tab">
+      <div class="authorizations-list">
+        <div class="authorization-card">
+          <div class="authorization-header">
+            <div class="authorization-title">Contrato de Staking</div>
+            <div class="authorization-status status-authorized">Autorizado</div>
+          </div>
+          <div class="authorization-details">
+            Permissão para interagir com o contrato de staking na Polygon
+          </div>
+          <div class="authorization-actions">
+            <button class="btn-small btn-secondary">Revogar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="language-selector-container">
+      <button class="language-toggle-btn" id="languageToggle">
+        <i class="fas fa-globe"></i>
+      </button>
+    </div>
   </div>
-  
+
   <!-- Scripts Locais -->
   <script src="main.js"></script>
   <script src="wallet-core.js"></script>
@@ -58,12 +190,29 @@
   <script src="identity-dynamic.js"></script>
   <script src="web-rtc.js"></script>
   <script src="agenda-system.js"></script>
-  
+
   <script>
-    // Teste rápido
-    console.log("✅ Site carregado!");
-    document.getElementById('connectWallet')?.addEventListener('click', function() {
-      alert('Funcionalidade de conexão em breve!');
+    // Teste básico
+    console.log('✅ CSS carregado com sucesso!');
+    
+    // Navegação entre tabs
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', function() {
+        const tabId = this.getAttribute('data-tab');
+        
+        // Remove active de todos
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        // Adiciona active ao selecionado
+        this.classList.add('active');
+        document.getElementById(`${tabId}-tab`).classList.add('active');
+      });
+    });
+
+    // Botão conectar wallet
+    document.getElementById('connectWalletBtn')?.addEventListener('click', function() {
+      alert('Funcionalidade de conexão será implementada!');
     });
   </script>
   
