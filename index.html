@@ -20,15 +20,37 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 </head>
 <body class="theme-luxury">
-  <!-- TODO: COPIAR AQUI TODO O CONTEÚDO DA TAG <body> DO ARQUIVO ORIGINAL -->
-  <!-- REMOVER: 
-      1. A tag <style> inteira 
-      2. Todo o conteúdo da tag <script> (todo o JavaScript)
-      3. Manter apenas o HTML puro
-  -->
   
-  <!-- ⚠️ ATENÇÃO: MUDEI AQUI ⚠️ -->
-  <!-- Scripts Locais (Módulos Separados) - SEM PASTA JS -->
+  <!-- ⚠️ COLE AQUI TODO O CONTEÚDO DO SEU SITE ⚠️ -->
+  <!-- Exemplo mínimo para testar: -->
+  
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-crown"></i> Exclusive Wallet Premium</h1>
+      <p>Sistema Polygon com RPC Infra Identity</p>
+    </header>
+    
+    <main>
+      <div class="card">
+        <h2>🚀 Bem-vindo ao Sistema</h2>
+        <p>Conecte sua wallet para começar:</p>
+        <button id="connectWallet" class="btn-primary">
+          <i class="fas fa-wallet"></i> Conectar Wallet
+        </button>
+      </div>
+      
+      <div class="card">
+        <h3>Status do Sistema</h3>
+        <p id="status">Aguardando conexão...</p>
+      </div>
+    </main>
+    
+    <footer>
+      <p>© 2025 Exclusive Layer - Sistema Premium</p>
+    </footer>
+  </div>
+  
+  <!-- Scripts Locais -->
   <script src="main.js"></script>
   <script src="wallet-core.js"></script>
   <script src="blockchain-manager.js"></script>
@@ -36,5 +58,14 @@
   <script src="identity-dynamic.js"></script>
   <script src="web-rtc.js"></script>
   <script src="agenda-system.js"></script>
+  
+  <script>
+    // Teste rápido
+    console.log("✅ Site carregado!");
+    document.getElementById('connectWallet')?.addEventListener('click', function() {
+      alert('Funcionalidade de conexão em breve!');
+    });
+  </script>
+  
 </body>
 </html>
