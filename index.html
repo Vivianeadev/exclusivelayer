@@ -4,10 +4,86 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra AVZ</title>
+  
+  <!-- CDNs -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- CSS Local -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="theme-luxury">
+  <div class="wallet-container">
+    
+    <!-- HEADER -->
+    <div id="header-container"></div>
+    
+    <!-- TELA DE LOGIN -->
+    <div id="login-container"></div>
+    
+    <!-- DASHBOARD PRINCIPAL -->
+    <div id="wallet-dashboard" class="hidden">
+      
+      <!-- TÍTULO DO DASHBOARD -->
+      <div class="wallet-header">
+        <h2>Dashboard Polygon Identity</h2>
+        <p>Identidade única Polygon com gestão completa e recursos premium</p>
+        <div style="margin-top: 20px;">
+          <div class="status-indicator verified" style="display: inline-block; margin-right: 8px;"></div>
+          <span style="font-size: 12px; color: var(--success-color); letter-spacing: 1px;">
+            CONECTADO VIA RPC INFRA AVZ • 
+            <span id="connectionStatus">LATÊNCIA: --</span>
+          </span>
+        </div>
+      </div>
+      
+      <!-- NAVEGAÇÃO POR ABAS -->
+      <div id="tabs-navigation"></div>
+      
+      <!-- CONTEÚDO DAS ABAS -->
+      <div id="tabs-content"></div>
+      
+    </div>
+  </div>
+  
+  <!-- MODALS -->
+  <div id="modals-container"></div>
+  
+  <!-- NOTIFICAÇÃO -->
+  <div id="notification-container"></div>
+  
+  <!-- SCRIPTS -->
+  <script src="js/main.js"></script>
+  <script src="js/blockchain-system.js"></script>
+  <script src="js/communication-system.js"></script>
+  <script src="js/agenda-system.js"></script>
+  
+  <script>
+    // Carregar componentes dinamicamente
+    document.addEventListener('DOMContentLoaded', function() {
+      // Carregar componentes HTML
+      loadComponent('components/header.html', 'header-container');
+      loadComponent('components/login-screen.html', 'login-container');
+      loadComponent('components/dashboard-tabs.html', 'tabs-navigation');
+      loadComponent('components/overview-tab.html', 'tabs-content');
+      loadComponent('components/modals.html', 'modals-container');
+      loadComponent('components/notification.html', 'notification-container');
+      
+      // Inicializar sistemas
+      initializeMainSystems();
+    });
+    
+    function loadComponent(url, elementId) {
+      fetch(url)
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById(elementId).innerHTML = html;
+        })
+        .catch(error => console.error('Erro ao carregar componente:', error));
+    }
+  </script>
+</body>
+</html>
