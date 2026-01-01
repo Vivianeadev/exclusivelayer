@@ -1,0 +1,305 @@
+/* Responsividade */
+
+/* Para telas até 1200px */
+@media (max-width: 1200px) {
+  .wallet-container {
+    padding: 40px 30px;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .balance-display {
+    font-size: 36px;
+  }
+  
+  .communication-main-container {
+    padding: 20px;
+  }
+  
+  .info-card {
+    padding: 30px;
+  }
+}
+
+/* Para telas até 992px */
+@media (max-width: 992px) {
+  .wallet-container {
+    padding: 30px 20px;
+  }
+  
+  .logo h1 {
+    font-size: 32px;
+  }
+  
+  .wallet-header h2 {
+    font-size: 28px;
+  }
+  
+  .tab-navigation {
+    overflow-x: auto;
+    justify-content: flex-start;
+    padding: 10px;
+  }
+  
+  .tab-button {
+    flex-shrink: 0;
+  }
+  
+  .sub-tab-navigation {
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+  
+  .sub-tab-btn {
+    flex-shrink: 0;
+  }
+  
+  .balance-display {
+    font-size: 28px;
+  }
+  
+  .communication-main-container {
+    min-height: 500px;
+  }
+  
+  .wallet-operations-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Para telas até 768px */
+@media (max-width: 768px) {
+  .wallet-container {
+    padding: 20px 15px;
+  }
+  
+  header {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .theme-controls {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .logo h1 {
+    font-size: 28px;
+    letter-spacing: 2px;
+  }
+  
+  .logo span {
+    font-size: 10px;
+    letter-spacing: 5px;
+  }
+  
+  .wallet-header h2 {
+    font-size: 24px;
+  }
+  
+  .wallet-header p {
+    font-size: 14px;
+  }
+  
+  .info-card {
+    padding: 20px;
+  }
+  
+  .info-card h3 {
+    font-size: 20px;
+  }
+  
+  .communication-main-container {
+    padding: 15px;
+    border-radius: 20px;
+  }
+  
+  .video-container {
+    height: 250px;
+  }
+  
+  .chat-container {
+    height: 350px;
+  }
+  
+  .agenda-calendar {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    padding: 10px;
+  }
+  
+  .agenda-day {
+    min-height: 60px;
+    padding: 5px;
+  }
+  
+  .agenda-day-number {
+    font-size: 12px;
+  }
+  
+  .agenda-day-event {
+    font-size: 9px;
+    padding: 2px 4px;
+  }
+  
+  .communication-badges {
+    gap: 8px;
+  }
+  
+  .communication-badge {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  
+  .wallet-address-display {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  
+  .copy-btn {
+    align-self: flex-end;
+  }
+  
+  .dev-agenda-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .agenda-entry {
+    padding: 15px;
+  }
+  
+  .agenda-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .agenda-status {
+    align-self: flex-start;
+  }
+  
+  .language-selector-container {
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  .language-toggle-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+  }
+  
+  .language-panel {
+    width: 180px;
+  }
+  
+  .chain-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .wallet-operations-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .mnemonic-words {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Para telas até 480px */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  
+  .wallet-container {
+    padding: 15px 10px;
+    border-radius: 20px;
+  }
+  
+  .logo h1 {
+    font-size: 24px;
+  }
+  
+  .wallet-header h2 {
+    font-size: 20px;
+  }
+  
+  .balance-display {
+    font-size: 24px;
+  }
+  
+  .balance-label {
+    font-size: 12px;
+  }
+  
+  .info-card h3 {
+    font-size: 18px;
+  }
+  
+  .btn {
+    padding: 16px;
+    font-size: 14px;
+  }
+  
+  .input-group input,
+  .input-group textarea,
+  .input-group select {
+    padding: 14px;
+    font-size: 14px;
+  }
+  
+  .video-container {
+    height: 200px;
+  }
+  
+  .chat-container {
+    height: 300px;
+  }
+  
+  .message {
+    max-width: 90%;
+  }
+  
+  .tab-button {
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  
+  .sub-tab-btn {
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+  
+  .communication-main-container {
+    padding: 12px;
+    border-radius: 18px;
+  }
+  
+  .mnemonic-words {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animações específicas para responsividade */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.message-sent {
+  animation: slideInRight 0.3s ease-out;
+}
+
+.message-received {
+  animation: slideInLeft 0.3s ease-out;
+}
