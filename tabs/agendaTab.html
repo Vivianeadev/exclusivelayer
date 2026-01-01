@@ -1,0 +1,57 @@
+<div class="wallet-header">
+  <h2><i class="fas fa-calendar"></i> Agenda Premium</h2>
+  <p>Gerencie seus compromissos, reuniões e eventos importantes com elegância minimalista</p>
+</div>
+
+<div class="info-card">
+  <h3><i class="fas fa-calendar-alt"></i> Agenda Premium</h3>
+  <p style="margin-bottom: 25px; color: var(--text-secondary); font-size: 15px; line-height: 1.6;">
+    Gerencie seus compromissos, reuniões e eventos importantes.
+  </p>
+  
+  <div class="agenda-container">
+    <div class="agenda-header">
+      <div class="agenda-month-nav">
+        <button class="btn btn-secondary btn-small" id="prevMonth">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="agenda-month-title" id="currentMonth">dezembro de 2025</div>
+        <button class="btn btn-secondary btn-small" id="nextMonth">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="agenda-calendar" id="calendarGrid"></div>
+    
+    <div class="agenda-event-form">
+      <div class="input-group">
+        <label for="eventTitle">Título do Evento</label>
+        <input type="text" id="eventTitle" placeholder="Ex: Reunião com Investidores">
+      </div>
+      <div class="input-group">
+        <label for="eventDate">Data</label>
+        <input type="date" id="eventDate">
+      </div>
+      <div class="input-group">
+        <label for="eventTime">Horário</label>
+        <input type="time" id="eventTime">
+      </div>
+      <div class="input-group">
+        <label for="eventDescription">Descrição</label>
+        <textarea id="eventDescription" rows="2" placeholder="Detalhes do evento"></textarea>
+      </div>
+      <button class="btn btn-primary" id="addEvent">
+        <i class="fas fa-plus"></i> Adicionar Evento
+      </button>
+      <button class="btn btn-secondary" id="exportPDF" style="margin-top: 15px;">
+        <i class="fas fa-file-pdf"></i> Exportar Agenda (PDF)
+      </button>
+    </div>
+  </div>
+  
+  <div id="upcomingEvents" style="margin-top: 30px;">
+    <h4 style="color: var(--primary-color); margin-bottom: 15px; font-family: 'Cinzel', serif;">Próximos Eventos</h4>
+    <div id="eventsList"></div>
+  </div>
+</div>
