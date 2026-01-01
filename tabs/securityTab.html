@@ -1,0 +1,84 @@
+<div class="wallet-header">
+  <h2><i class="fas fa-shield-alt"></i> Central de Segurança Premium</h2>
+  <p>Proteja seus ativos com as melhores práticas de segurança na Polygon</p>
+</div>
+
+<div class="dashboard-grid">
+  <div class="info-card">
+    <h3><i class="fas fa-key"></i> Chave Privada Polygon</h3>
+    <p>Sua chave mestra para acessar e recuperar sua identidade Polygon.</p>
+    <ul>
+      <li><strong>✓ Como usar:</strong> Salve em local seguro e nunca compartilhe.</li>
+      <li><strong>⚠ Perigo:</strong> Quem tem essa chave tem acesso TOTAL aos seus fundos.</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3><i class="fas fa-lock"></i> Senha de Criptografia</h3>
+    <p>Protege sua carteira localmente no seu dispositivo.</p>
+    <ul>
+      <li><strong>✓ Funcionamento:</strong> A senha criptografa sua carteira apenas neste dispositivo.</li>
+      <li><strong>⚠ Atenção:</strong> Se esquecer a senha, use a chave privada para recuperar o acesso.</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3><i class="fas fa-shield-alt"></i> 100% Client-Side</h3>
+    <p>Tudo acontece no seu dispositivo. Suas chaves nunca saem do seu controle.</p>
+    <ul>
+      <li><strong>✓ Vantagem:</strong> Sem intermediários. Você é o único dono das suas chaves.</li>
+      <li><strong>⚠ Responsabilidade:</strong> Não há "esqueci minha senha". Sua segurança depende de você.</li>
+    </ul>
+  </div>
+
+  <div class="info-card">
+    <h3><i class="fas fa-archive"></i> Backup Polygon Identity</h3>
+    <p>Prepare-se para imprevistos com backups seguros.</p>
+    <ul>
+      <li><strong>✓ Melhor prática:</strong> Guarde múltiplas cópias da chave privada em locais físicos diferentes.</li>
+      <li><strong>⚠ Atenção:</strong> Perdeu a chave privada = perda permanente dos fundos.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="info-card">
+  <h3><i class="fas fa-user-secret"></i> Informações Sensíveis</h3>
+  
+  <div style="margin-bottom: 25px;">
+    <div style="color: var(--text-secondary); margin-bottom: 8px; font-size: 14px;">Chave Privada Polygon</div>
+    <div id="privateKeyDisplay" class="address-display" style="background: rgba(224, 17, 95, 0.08); border-color: rgba(224, 17, 95, 0.2);">••••••••••••••••••••••••••••••••••••••••••••••</div>
+    <div class="form-row">
+      <button class="btn btn-secondary btn-small" id="togglePrivateKey"><i class="fas fa-eye"></i> Mostrar Chave</button>
+      <button class="btn btn-secondary btn-small" id="copyPrivateKey">
+        <i class="fas fa-copy"></i> Copiar Chave
+      </button>
+    </div>
+  </div>
+
+  <div>
+    <div style="color: var(--text-secondary); margin-bottom: 8px; font-size: 14px;">Frase de Recuperação (12 palavras)</div>
+    <div id="mnemonicDisplay" class="address-display" style="background: rgba(212, 175, 55, 0.08); min-height: 60px; display: flex; align-items: center; justify-content: center;">••••••••••••••••••••••••••••••••••••••••••••••</div>
+    <div class="form-row">
+      <button class="btn btn-secondary btn-small" id="toggleMnemonic"><i class="fas fa-eye"></i> Mostrar Frase</button>
+      <button class="btn btn-secondary btn-small" id="copyMnemonic">
+        <i class="fas fa-copy"></i> Copiar Frase
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="info-card">
+  <h3><i class="fas fa-shield-alt"></i> Segurança e Registro</h3>
+  
+  <div class="form-row">
+    <button class="btn btn-secondary btn-small" id="showPrivateKey">
+      <i class="fas fa-eye"></i> Ver Chave
+    </button>
+    <button class="btn btn-secondary btn-small" id="exportWallet">
+      <i class="fas fa-download"></i> Exportar
+    </button>
+    <button class="btn btn-secondary btn-small" id="disconnectWallet">
+      <i class="fas fa-sign-out-alt"></i> Sair
+    </button>
+  </div>
+</div>
