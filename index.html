@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
+  
+  <!-- CDNs -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- CSS Local -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="theme-luxury">
+  <div class="wallet-container">
+    
+    <!-- Cabeçalho -->
+    <div id="header-container"></div>
+
+    <!-- Tela de Login -->
+    <div id="login-screen">
+      <!-- Será carregado via JavaScript -->
+    </div>
+
+    <!-- Dashboard Principal -->
+    <div id="wallet-dashboard" class="hidden">
+      <div class="wallet-header">
+        <h2>Dashboard Polygon Identity</h2>
+        <p>Identidade única Polygon com gestão completa e recursos premium</p>
+        <div style="margin-top: 20px;">
+          <div class="status-indicator verified" style="display: inline-block; margin-right: 8px;"></div>
+          <span style="font-size: 12px; color: var(--success-color); letter-spacing: 1px;">
+            CONECTADO VIA RPC INFRA IDENTITY • 
+            <span id="connectionStatus">LATÊNCIA: --</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Navegação Principal -->
+      <div class="tab-navigation">
+        <button class="tab-button active" data-tab="overviewTab">
+          <i class="fas fa-home"></i> Visão Geral
+        </button>
+        <button class="tab-button" data-tab="walletTab">
+          <i class="fas fa-wallet"></i> Wallet
+        </button>
+        <button class="tab-button" data-tab="blockchainsTab">
+          <i class="fas fa-link"></i> Blockchains
+        </button>
+        <button class="tab-button" data-tab="authorizationsTab">
+          <i class="fas fa-user-shield"></i> Autorizações
+        </button>
+        <button class="tab-button" data-tab="infraIdentityTab">
+          <i class="fas fa-server"></i> Infra Identity
+        </button>
+        <button class="tab-button" data-tab="securityTab">
+          <i class="fas fa-shield-alt"></i> Segurança
+        </button>
+        <button class="tab-button" data-tab="agendaTab">
+          <i class="fas fa-calendar"></i> Agenda
+        </button>
+        <button class="tab-button" data-tab="communicationTab">
+          <i class="fas fa-comments"></i> Comunicação
+        </button>
+      </div>
+
+      <!-- Container das Abas -->
+      <div id="tab-content-container">
+        <!-- As abas serão carregadas aqui dinamicamente -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Container para Modais -->
+  <div id="modals-container"></div>
+
+  <!-- Notificação -->
+  <div class="notification" id="notification">
+    <div id="notificationMessage">✅ Identidade Polygon conectada!</div>
+  </div>
+
+  <!-- JavaScript -->
+  <script src="js/wallet.js"></script>
+</body>
+</html>
