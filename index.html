@@ -4,14 +4,22 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
+  
+  <!-- Bibliotecas Externas -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  
+  <!-- Fontes e Ícones -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="/css/style.css">
+  
+  <!-- CSS do Projeto -->
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body class="theme-luxury">
   <div class="wallet-container">
@@ -161,13 +169,12 @@
         </button>
       </div>
 
-      <!-- Container onde as abas serão carregadas dinamicamente -->
-      <div id="tab-content-container">
-        <!-- As abas serão carregadas aqui via JavaScript -->
-      </div>
+      <!-- Conteúdo das tabs será carregado via JavaScript -->
+      <div id="tab-content-container"></div>
     </div>
   </div>
 
+  <!-- MODAIS -->
   <!-- Modal para Mnemônica (Criação) -->
   <div class="modal-overlay" id="mnemonicCreationModal">
     <div class="modal-content">
@@ -212,59 +219,6 @@
       <div class="modal-footer">
         <button class="btn btn-secondary" id="cancelRestore">Cancelar</button>
         <button class="btn btn-primary" id="confirmRestore">Restaurar Identidade</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para criação de wallet em outras chains -->
-  <div class="modal-overlay" id="mnemonicCreationModalOther">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><i class="fas fa-key"></i> Frase Mnemônica Gerada - <span id="currentChainName"></span></h3>
-        <button class="modal-close" id="closeMnemonicCreationModalOther">×</button>
-      </div>
-      <div class="modal-body">
-        <p style="color: var(--text-secondary); margin-bottom: 20px;">
-          <strong>Anote esta frase em um local seguro.</strong> Ela é a única maneira de recuperar sua wallet na <span id="chainNameText"></span>.
-          Você tem <strong>5 minutos</strong> para anotar. Após esse tempo, ela nunca mais será exibida.
-        </p>
-        <div class="mnemonic-timer-container">
-          <div class="mnemonic-timer" id="mnemonicTimerOther">05:00</div>
-          <div class="mnemonic-warning">
-            <i class="fas fa-exclamation-triangle"></i> Tempo para anotar antes que a frase desapareça
-          </div>
-        </div>
-        <div class="mnemonic-words" id="mnemonicWordsContainerOther">
-          <!-- Palavras serão inseridas aqui -->
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelWalletCreationOther">Cancelar Criação</button>
-        <button class="btn btn-primary" id="confirmMnemonicSavedOther">Já anotei, continuar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal para restauração em outras chains -->
-  <div class="modal-overlay" id="mnemonicModalOther">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><i class="fas fa-redo"></i> Restaurar Wallet - <span id="restoreChainName"></span></h3>
-        <button class="modal-close" id="closeMnemonicModalOther">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="input-group">
-          <label for="mnemonicPhraseOther">Frase Mnemônica (12 ou 24 palavras)</label>
-          <textarea id="mnemonicPhraseOther" rows="3" placeholder="insira sua frase mnemônica aqui..."></textarea>
-        </div>
-        <div class="input-group" style="margin-top: 20px;">
-          <label for="privateKeyOther">Ou Chave Privada</label>
-          <input type="password" id="privateKeyOther" placeholder="0x..." style="font-family: 'Courier New', monospace;">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelRestoreOther">Cancelar</button>
-        <button class="btn btn-primary" id="confirmRestoreOther">Restaurar Wallet</button>
       </div>
     </div>
   </div>
@@ -334,141 +288,15 @@ scope:rpc
     <div id="notificationMessage">✅ Identidade Polygon conectada!</div>
   </div>
 
-  <script>
-    // Sistema de carregamento dinâmico das abas
-    const tabFiles = {
-      overviewTab: '/tabs/overviewTab.html',
-      walletTab: '/tabs/walletTab.html',
-      blockchainsTab: '/tabs/blockchainsTab.html',
-      authorizationsTab: '/tabs/authorizationsTab.html',
-      infraIdentityTab: '/tabs/infraIdentityTab.html',
-      securityTab: '/tabs/securityTab.html',
-      agendaTab: '/tabs/agendaTab.html',
-      communicationTab: '/tabs/communicationTab.html'
-    };
-
-    let currentTab = null;
-    const loadedTabs = new Set();
-
-    // Função para carregar uma aba
-    async function loadTab(tabId) {
-      if (!tabFiles[tabId]) {
-        console.error(`Aba ${tabId} não encontrada`);
-        return;
-      }
-
-      try {
-        const response = await fetch(tabFiles[tabId]);
-        if (!response.ok) throw new Error(`Erro ao carregar ${tabId}`);
-        
-        const html = await response.text();
-        const container = document.getElementById('tab-content-container');
-        
-        // Remover conteúdo anterior
-        container.innerHTML = '';
-        
-        // Adicionar novo conteúdo
-        const wrapper = document.createElement('div');
-        wrapper.id = tabId;
-        wrapper.className = 'tab-content active';
-        wrapper.innerHTML = html;
-        container.appendChild(wrapper);
-        
-        // Marcar como carregada
-        loadedTabs.add(tabId);
-        currentTab = tabId;
-        
-        // Inicializar componentes específicos da aba
-        initializeTab(tabId);
-        
-      } catch (error) {
-        console.error(`Erro ao carregar a aba ${tabId}:`, error);
-        document.getElementById('tab-content-container').innerHTML = 
-          `<div class="info-card" style="text-align: center; padding: 50px;">
-            <h3 style="color: var(--error-color);"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar aba</h3>
-            <p>Não foi possível carregar o conteúdo da aba.</p>
-            <button class="btn btn-secondary" onclick="switchTab('overviewTab')">Voltar para Visão Geral</button>
-          </div>`;
-      }
-    }
-
-    // Função para inicializar componentes específicos de cada aba
-    function initializeTab(tabId) {
-      switch(tabId) {
-        case 'overviewTab':
-          // Inicializar componentes da visão geral
-          if (window.updateAddressRegistration) updateAddressRegistration();
-          break;
-        case 'walletTab':
-          // Inicializar componentes da wallet
-          if (window.showCorrectWalletForChain) showCorrectWalletForChain();
-          if (window.updateCurrentChainBalance) updateCurrentChainBalance();
-          break;
-        case 'blockchainsTab':
-          // Inicializar componentes de blockchains
-          if (window.initializeBlockchainButtons) initializeBlockchainButtons();
-          break;
-        case 'agendaTab':
-          // Inicializar agenda
-          if (window.agendaSystem && window.agendaSystem.init) window.agendaSystem.init();
-          break;
-        case 'communicationTab':
-          // Inicializar comunicação
-          if (window.loadContacts) loadContacts();
-          if (window.updateAuthorizationStatus) updateAuthorizationStatus();
-          break;
-      }
-    }
-
-    // Modificar a função switchTab original
-    window.switchTab = function(tabId) {
-      // Atualizar navegação
-      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-      
-      const targetBtn = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-      if (targetBtn) targetBtn.classList.add('active');
-      
-      // Carregar a aba
-      loadTab(tabId);
-      
-      // Scroll para o topo
-      window.scrollTo(0, 0);
-    };
-
-    // Carregar a aba padrão quando o dashboard for mostrado
-    function showWalletDashboard() {
-      document.getElementById('login-screen').classList.add('fade-out');
-      
-      setTimeout(() => {
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('wallet-dashboard').classList.remove('hidden');
-        document.getElementById('wallet-dashboard').classList.add('fade-in');
-        
-        // Carregar a aba padrão (overviewTab)
-        switchTab('overviewTab');
-        
-        // Inicializar outras funcionalidades
-        if (window.updateSensitiveDataDisplay) updateSensitiveDataDisplay();
-        if (window.updateOverview) updateOverview();
-        if (window.refreshBalance) refreshBalance();
-        if (window.testRpcConnection) testRpcConnection();
-        
-      }, 800);
-    }
-
-    // Resto das funções JavaScript permanecem no index.html
-    // ... (todo o restante do código JavaScript do arquivo original)
-  </script>
-
-  <!-- Linha divisória de luxo e instruções finais -->
-  <div style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 800px;">
-    <div style="width: 100%; height: 1px; background: var(--gradient-gold); margin-bottom: 10px;"></div>
-    <div style="text-align: center; color: var(--text-secondary); font-size: 9px; line-height: 1.3;">
-      <strong>Exclusive Wallet Premium</strong> • Sistema Polygon com RPC Infra Identity • 
-      100% Client-Side • Criptografia Ponta a Ponta • WebRTC Real • 
-      <span style="color: var(--success-color);">✅ Auditável • Modular • Seguro • Escalável • Real • Isolado</span>
-    </div>
-  </div>
+  <!-- JavaScript do Projeto -->
+  <script src="js/constants.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/identity-rpc.js"></script>
+  <script src="js/wallet.js"></script>
+  <script src="js/blockchain.js"></script>
+  <script src="js/communication.js"></script>
+  <script src="js/security.js"></script>
+  <script src="js/agenda.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
