@@ -4393,7 +4393,369 @@ scope:rpc
     // ======================================================
     // INICIALIZAÇÃO DO SISTEMA
     // ======================================================
+    // ======================================================
+    // SISTEMA DE AGENDA COMPLETO
+    // ======================================================
 
+    const agendaSystem = {
+      currentDate: new Date(),
+      events: [],
+
+      init: function() {
+        this.loadEvents();
+        this.renderCalendar();
+        this.setupEventListeners();
+        this.updateEventsList();
+      },
+
+      loadEvents: function() {
+        const savedEvents = localStorage.getItem('exclusiveWalletAgendaEvents');
+        this.events = savedEvents ? JSON.parse(savedEvents) : [];
+      },
+
+      saveEvents: function() {
+        localStorage.setItem('exclusiveWalletAgendaEvents', JSON.stringify(this.events));
+      },
+
+      renderCalendar: function() {
+        const calendarGrid = document.getElementById('calendarGrid');
+        if (!calendarGrid) return;
+
+        calendarGrid.innerHTML = '';
+
+        // Cabeçalho dos dias da semana
+        const daysOfWeek = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+        daysOfWeek.forEach(day => {
+          const dayHeader = document.createElement('div');
+          dayHeader.style.textAlign = 'center';
+          dayHeader.style.fontWeight = '600';
+          dayHeader.style.color = 'var(--primary-color)';
+          dayHeader.style.padding = '8px';
+          dayHeader.textContent = day;
+          calendarGrid.appendChild(dayHeader);
+        });
+
+        const year = this.currentDate.getFullYear();
+        const month = this.currentDate.getMonth();
+
+        // Atualizar título do mês
+        const monthTitle = document.getElementById('currentMonth');
+        if (monthTitle) {
+          const monthNames = [
+            'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
+            'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+          ];
+          monthTitle.textContent = `${monthNames[month]} de ${year}`;
+        }
+
+        // Primeiro dia do mês
+        const firstDay = new Date(year, month, 1);
+        // Último dia do mês
+        const lastDay = new Date(year, month + 1, 0);
+        // Dia da semana do primeiro dia (0 = Domingo, 1 = Segunda, etc.)
+        const firstDayOfWeek = firstDay.getDay();
+
+        // Dias vazios antes do primeiro dia
+        for (let i = 0; i < firstDayOfWeek; i++) {
+          const emptyDay = document.createElement('div');
+          emptyDay.className = 'agenda-day';
+          emptyDay.style.opacity = '0.3';
+          calendarGrid.appendChild(emptyDay);
+        }
+
+        // Dias do mês
+        for (let day = 1; day <= lastDay.getDate(); day++) {
+          const dayElement = document.createElement('div');
+          dayElement.className = 'agenda-day';
+          dayElement.setAttribute('data-day', day);
+
+          const dayNumber = document.createElement('div');
+          dayNumber.className = 'agenda-day-number';
+          dayNumber.textContent = day;
+
+          dayElement.appendChild(dayNumber);
+
+          // Verificar se há eventos neste dia
+          const currentDate = new Date(year, month, day);
+          const dayEvents = this.getEventsForDate(currentDate);
+
+          if (dayEvents.length > 0) {
+            dayEvents.forEach(event => {
+              const eventElement = document.createElement('div');
+              eventElement.className = 'agenda-day-event';
+              eventElement.title = `${event.title} - ${event.time}`;
+              eventElement.textContent = event.title.substring(0, 12) + (event.title.length > 12 ? '...' : '');
+              dayElement.appendChild(eventElement);
+            });
+          }
+
+          // Destacar dia atual
+          const today = new Date();
+          if (year === today.getFullYear() && month === today.getMonth() && day === today.getDate()) {
+            dayElement.classList.add('selected');
+          }
+
+          // Evento de clique no dia
+          dayElement.addEventListener('click', () => {
+            this.selectDay(day);
+          });
+
+          calendarGrid.appendChild(dayElement);
+        }
+      },
+
+      getEventsForDate: function(date) {
+        const dateStr = date.toISOString().split('T')[0];
+        return this.events.filter(event => {
+          const eventDate = new Date(event.date);
+          const eventDateStr = eventDate.toISOString().split('T')[0];
+          return eventDateStr === dateStr;
+        });
+      },
+
+      selectDay: function(day) {
+        const year = this.currentDate.getFullYear();
+        const month = this.currentDate.getMonth();
+        const selectedDate = new Date(year, month, day);
+
+        // Remover seleção anterior
+        document.querySelectorAll('.agenda-day.selected').forEach(el => {
+          el.classList.remove('selected');
+        });
+
+        // Adicionar seleção ao dia clicado
+        const dayElement = document.querySelector(`.agenda-day[data-day="${day}"]`);
+        if (dayElement) {
+          dayElement.classList.add('selected');
+        }
+
+        // Preencher formulário com a data selecionada
+        const eventDateInput = document.getElementById('eventDate');
+        if (eventDateInput) {
+          eventDateInput.value = selectedDate.toISOString().split('T')[0];
+        }
+
+        // Mostrar eventos do dia selecionado
+        this.showDayEvents(selectedDate);
+      },
+
+      showDayEvents: function(date) {
+        const dayEvents = this.getEventsForDate(date);
+        const eventsList = document.getElementById('eventsList');
+        if (!eventsList) return;
+
+        eventsList.innerHTML = '';
+
+        if (dayEvents.length === 0) {
+          eventsList.innerHTML = '<div style="color: var(--text-secondary); text-align: center; padding: 20px;">Nenhum evento para esta data</div>';
+          return;
+        }
+
+        dayEvents.forEach(event => {
+          const eventElement = document.createElement('div');
+          eventElement.className = 'agenda-entry';
+          eventElement.innerHTML = `
+            <div class="agenda-header">
+              <div class="agenda-title">${event.title}</div>
+              <div class="agenda-status status-in-progress">${event.time}</div>
+            </div>
+            <div class="agenda-description">${event.description}</div>
+            <div class="agenda-footer">
+              <div>${this.formatEventDate(event.date)}</div>
+              <button class="btn btn-secondary btn-small" onclick="agendaSystem.deleteEvent('${event.id}')" style="padding: 4px 8px; font-size: 10px;">
+                <i class="fas fa-trash"></i> Excluir
+              </button>
+            </div>
+          `;
+          eventsList.appendChild(eventElement);
+        });
+      },
+
+      formatEventDate: function(dateString) {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        });
+      },
+
+      setupEventListeners: function() {
+        // Navegação do mês
+        document.getElementById('prevMonth')?.addEventListener('click', () => {
+          this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+          this.renderCalendar();
+          this.updateEventsList();
+        });
+
+        document.getElementById('nextMonth')?.addEventListener('click', () => {
+          this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+          this.renderCalendar();
+          this.updateEventsList();
+        });
+
+        // Adicionar evento
+        document.getElementById('addEvent')?.addEventListener('click', () => {
+          this.addEvent();
+        });
+
+        // Exportar PDF
+        document.getElementById('exportPDF')?.addEventListener('click', () => {
+          this.exportToPDF();
+        });
+      },
+
+      addEvent: function() {
+        const title = document.getElementById('eventTitle').value.trim();
+        const date = document.getElementById('eventDate').value;
+        const time = document.getElementById('eventTime').value;
+        const description = document.getElementById('eventDescription').value.trim();
+
+        if (!title || !date || !time) {
+          showNotification('Preencha título, data e horário', 'error');
+          return;
+        }
+
+        const event = {
+          id: Date.now().toString(),
+          title: title,
+          date: `${date}T${time}`,
+          time: time,
+          description: description,
+          created: new Date().toISOString()
+        };
+
+        this.events.push(event);
+        this.saveEvents();
+
+        // Limpar formulário
+        document.getElementById('eventTitle').value = '';
+        document.getElementById('eventDate').value = '';
+        document.getElementById('eventTime').value = '';
+        document.getElementById('eventDescription').value = '';
+
+        // Atualizar calendário e lista
+        this.renderCalendar();
+        this.updateEventsList();
+
+        showNotification('Evento adicionado com sucesso!', 'success');
+      },
+
+      deleteEvent: function(eventId) {
+        if (confirm('Excluir este evento?')) {
+          this.events = this.events.filter(event => event.id !== eventId);
+          this.saveEvents();
+          this.renderCalendar();
+          this.updateEventsList();
+          showNotification('Evento excluído', 'info');
+        }
+      },
+
+      updateEventsList: function() {
+        const eventsList = document.getElementById('upcomingEvents');
+        if (!eventsList) return;
+
+        // Ordenar eventos por data
+        const sortedEvents = [...this.events].sort((a, b) => new Date(a.date) - new Date(b.date));
+
+        // Pegar próximos 5 eventos
+        const upcoming = sortedEvents.filter(event => new Date(event.date) >= new Date()).slice(0, 5);
+
+        const eventsContainer = document.getElementById('eventsList');
+        if (!eventsContainer) return;
+
+        eventsContainer.innerHTML = '';
+
+        if (upcoming.length === 0) {
+          eventsContainer.innerHTML = '<div style="color: var(--text-secondary); text-align: center; padding: 20px;">Nenhum evento agendado</div>';
+          return;
+        }
+
+        upcoming.forEach(event => {
+          const eventElement = document.createElement('div');
+          eventElement.className = 'agenda-entry';
+          eventElement.innerHTML = `
+            <div class="agenda-header">
+              <div class="agenda-title">${event.title}</div>
+              <div class="agenda-status status-in-progress">${event.time}</div>
+            </div>
+            <div class="agenda-description">${event.description}</div>
+            <div class="agenda-footer">
+              <div>${this.formatEventDate(event.date)}</div>
+              <button class="btn btn-secondary btn-small" onclick="agendaSystem.deleteEvent('${event.id}')" style="padding: 4px 8px; font-size: 10px;">
+                <i class="fas fa-trash"></i> Excluir
+              </button>
+            </div>
+          `;
+          eventsContainer.appendChild(eventElement);
+        });
+      },
+
+      exportToPDF: function() {
+        const { jsPDF } = window.jspdf;
+        if (!jsPDF) {
+          showNotification('Biblioteca PDF não carregada', 'error');
+          return;
+        }
+
+        const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+        
+        // Título
+        doc.setFontSize(20);
+        doc.setTextColor(212, 175, 55);
+        doc.text('Agenda Premium - Exclusive Wallet', pageWidth / 2, 20, { align: 'center' });
+        
+        doc.setFontSize(12);
+        doc.setTextColor(100, 100, 100);
+        doc.text(`Gerado em: ${new Date().toLocaleDateString('pt-BR')}`, pageWidth / 2, 30, { align: 'center' });
+        
+        // Lista de eventos
+        let yPos = 50;
+        doc.setFontSize(14);
+        doc.setTextColor(26, 26, 26);
+        doc.text('Próximos Eventos:', 20, yPos);
+        yPos += 10;
+        
+        doc.setFontSize(10);
+        const sortedEvents = [...this.events].sort((a, b) => new Date(a.date) - new Date(b.date));
+        
+        sortedEvents.forEach((event, index) => {
+          if (yPos > 250) {
+            doc.addPage();
+            yPos = 20;
+          }
+          
+          const eventDate = new Date(event.date);
+          const dateStr = eventDate.toLocaleDateString('pt-BR');
+          const timeStr = eventDate.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+          
+          doc.setFont('helvetica', 'bold');
+          doc.text(`${index + 1}. ${event.title}`, 25, yPos);
+          doc.setFont('helvetica', 'normal');
+          doc.text(`Data: ${dateStr} ${timeStr}`, 30, yPos + 5);
+          
+          if (event.description) {
+            const descriptionLines = doc.splitTextToSize(event.description, pageWidth - 50);
+            doc.text(descriptionLines, 30, yPos + 10);
+            yPos += 10 + (descriptionLines.length * 5);
+          }
+          
+          yPos += 15;
+        });
+        
+        // Rodapé
+        doc.setFontSize(8);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Exclusive Wallet Premium - Sistema Polygon', pageWidth / 2, 290, { align: 'center' });
+        
+        // Salvar
+        const fileName = `agenda-polygon-${new Date().getTime()}.pdf`;
+        doc.save(fileName);
+        
+        showNotification(`Agenda exportada como ${fileName}`, 'success');
+      }
+    };
     // Event Listeners
     document.addEventListener('DOMContentLoaded', function() {
       // Tema
