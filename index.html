@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
+  
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
-  <script src="assets/js/script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-luxury">
-  <!-- TODO O SEU HTML AQUI (o conteúdo completo que estava dentro do <body>) -->
   <div class="wallet-container">
     <header>
       <div class="logo">
@@ -32,7 +33,7 @@
     </header>
 
     <!-- ÁREA DE LOGIN -->
-    <div id="login-screen" class="fade-out hidden">
+    <div id="login-screen">
       <div class="wallet-header">
         <h2>Sistema Polygon Premium Identity</h2>
         <p>Identidade única Polygon para gerenciamento completo e acesso a recursos premium.</p>
@@ -68,7 +69,7 @@
           <h3><i class="fas fa-plus-circle"></i> Nova Carteira Polygon</h3>
           <div class="input-group">
             <label for="newWalletPassword">Senha de Segurança (Opcional)</label>
-            <input type="password" id="newWalletPassword" placeholder="Proteje sua carteira localmente">
+            <input type="password" id="newWalletPassword" placeholder="Proteja sua carteira localmente">
             <small style="color:var(--text-secondary);font-size:11px;margin-top:5px">
               <i class="fas fa-exclamation-triangle"></i> Senha local apenas neste dispositivo. Se perdida, use a chave privada.
             </small>
@@ -122,7 +123,7 @@
     </div>
 
     <!-- DASHBOARD PRINCIPAL -->
-    <div id="wallet-dashboard" class="fade-in">
+    <div id="wallet-dashboard" class="hidden">
       <div class="wallet-header">
         <h2>Dashboard Polygon Identity</h2>
         <p>Identidade única Polygon com gestão completa e recursos premium</p>
@@ -130,14 +131,14 @@
           <div class="status-indicator verified" style="display: inline-block; margin-right: 8px;"></div>
           <span style="font-size: 12px; color: var(--success-color); letter-spacing: 1px;">
             CONECTADO VIA RPC INFRA IDENTITY • 
-            <span id="connectionStatus">LATÊNCIA: 540ms</span>
+            <span id="connectionStatus">LATÊNCIA: --</span>
           </span>
         </div>
       </div>
 
       <!-- Navegação Principal Refinada -->
       <div class="tab-navigation">
-        <button class="tab-button" data-tab="overviewTab">
+        <button class="tab-button active" data-tab="overviewTab">
           <i class="fas fa-home"></i> Visão Geral
         </button>
         <button class="tab-button" data-tab="walletTab">
@@ -155,7 +156,7 @@
         <button class="tab-button" data-tab="securityTab">
           <i class="fas fa-shield-alt"></i> Segurança
         </button>
-        <button class="tab-button active" data-tab="agendaTab">
+        <button class="tab-button" data-tab="agendaTab">
           <i class="fas fa-calendar"></i> Agenda
         </button>
         <button class="tab-button" data-tab="communicationTab">
@@ -164,7 +165,7 @@
       </div>
 
       <!-- Overview Tab -->
-      <div class="tab-content" id="overviewTab">
+      <div class="tab-content active" id="overviewTab">
         <div class="info-card">
           <h3><i class="fas fa-chart-pie"></i> Visão Geral da Identidade Polygon</h3>
           <p style="margin-bottom: 25px; color: var(--text-secondary); font-size: 15px; line-height: 1.6;">
@@ -173,7 +174,7 @@
           
           <div class="balance-container" style="margin: 20px 0;">
             <div class="balance-label">Endereço Público Polygon</div>
-            <div class="balance-display" id="walletAddressDisplay" style="font-size: 36px;">0x687c...83d8dC</div>
+            <div class="balance-display" id="walletAddressDisplay" style="font-size: 36px;">0x0ba3...9DaC7f</div>
             <div class="balance-label">Protocolo de Comunicação Premium</div>
           </div>
           
@@ -218,7 +219,7 @@
           </p>
           
           <div class="wallet-address-display">
-            <div class="address-text" id="publicAddressDisplay" style="font-size: 12px;">0x687c95f21a7C297A628Aae7A86b863FcD783d8dC</div>
+            <div class="address-text" id="publicAddressDisplay" style="font-size: 12px;">0x0ba3F2f891A90547C171727E745CeA6ad69DaC7f</div>
             <button class="copy-btn" onclick="copyAddress()">
               <i class="fas fa-copy"></i> Copiar
             </button>
@@ -488,26 +489,7 @@
 
         <!-- Área superior - 20 botões de blockchains -->
         <div class="blockchain-buttons-container" id="blockchainButtonsContainer">
-          <button class="blockchain-button active" data-chain="polygon">Polygon</button>
-          <button class="blockchain-button" data-chain="ethereum">Ethereum</button>
-          <button class="blockchain-button" data-chain="bsc">BSC</button>
-          <button class="blockchain-button" data-chain="avalanche">Avalanche</button>
-          <button class="blockchain-button" data-chain="fantom">Fantom</button>
-          <button class="blockchain-button" data-chain="arbitrum">Arbitrum</button>
-          <button class="blockchain-button" data-chain="optimism">Optimism</button>
-          <button class="blockchain-button" data-chain="base">Base</button>
-          <button class="blockchain-button" data-chain="cronos">Cronos</button>
-          <button class="blockchain-button" data-chain="harmony">Harmony</button>
-          <button class="blockchain-button" data-chain="kava">Kava</button>
-          <button class="blockchain-button" data-chain="celo">Celo</button>
-          <button class="blockchain-button" data-chain="moonbeam">Moonbeam</button>
-          <button class="blockchain-button" data-chain="moonriver">Moonriver</button>
-          <button class="blockchain-button" data-chain="gnosis">Gnosis</button>
-          <button class="blockchain-button" data-chain="fuse">Fuse</button>
-          <button class="blockchain-button" data-chain="metis">Metis</button>
-          <button class="blockchain-button" data-chain="polygonzkevm">Polygon zkEVM</button>
-          <button class="blockchain-button" data-chain="linea">Linea</button>
-          <button class="blockchain-button" data-chain="scroll">Scroll</button>
+          <!-- Botões serão inseridos via JavaScript -->
         </div>
 
         <!-- Linha divisória de luxo -->
@@ -653,7 +635,9 @@
           <div class="chain-details">
             <div>
               <div style="color: var(--text-secondary); font-size: 13px; margin-bottom: 5px;">RPC URL</div>
-              <div style="font-size: 14px; font-weight: 500; color: var(--text-primary); font-family: 'Courier New', monospace;" id="currentRpcUrl">https://polygon-rpc.com</div>
+              <div style="font-size: 14px; font-weight: 500; color: var(--text-primary); font-family: 'Courier New', monospace;" id="currentRpcUrl">
+                https://polygon-rpc.com
+              </div>
             </div>
             
             <div>
@@ -668,7 +652,9 @@
             
             <div>
               <div style="color: var(--text-secondary); font-size: 13px; margin-bottom: 5px;">Status</div>
-              <div style="font-size: 14px; font-weight: 500; color: var(--success-color);" id="rpcStatus"><i class="fas fa-check-circle"></i> Conectado</div>
+              <div style="font-size: 14px; font-weight: 500; color: var(--success-color);" id="rpcStatus">
+                <i class="fas fa-check-circle"></i> Conectado
+              </div>
             </div>
           </div>
           
@@ -680,17 +666,17 @@
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
               <div style="text-align: center; background: var(--gradient-card); padding: 15px; border-radius: 12px;">
                 <div style="color: var(--text-secondary); font-size: 11px;">Latência</div>
-                <div style="font-size: 20px; font-weight: 600; color: var(--success-color);" id="rpcLatency">540ms</div>
+                <div style="font-size: 20px; font-weight: 600; color: var(--success-color);" id="rpcLatency">142ms</div>
               </div>
               
               <div style="text-align: center; background: var(--gradient-card); padding: 15px;border-radius: 12px;">
                 <div style="color: var(--text-secondary); font-size: 11px;">Último Bloco</div>
-                <div style="font-size: 20px; font-weight: 600; color: var(--primary-color);" id="lastBlock">81.126.933</div>
+                <div style="font-size: 20px; font-weight: 600; color: var(--primary-color);" id="lastBlock">45,289,127</div>
               </div>
               
               <div style="text-align: center; background: var(--gradient-card); padding: 15px;border-radius: 12px;">
                 <div style="color: var(--text-secondary); font-size: 11px;">Preço do Gás</div>
-                <div style="font-size: 20px; font-weight: 600; color: var(--primary-color);" id="gasPriceDisplay">2349 GWEI</div>
+                <div style="font-size: 20px; font-weight: 600; color: var(--primary-color);" id="gasPriceDisplay">30 GWEI</div>
               </div>
             </div>
           </div>
@@ -914,7 +900,7 @@
       </div>
 
       <!-- Agenda Tab -->
-      <div class="tab-content active" id="agendaTab">
+      <div class="tab-content" id="agendaTab">
         <div class="wallet-header">
           <h2><i class="fas fa-calendar"></i> Agenda Premium</h2>
           <p>Gerencie seus compromissos, reuniões e eventos importantes com elegância minimalista</p>
@@ -1051,11 +1037,8 @@
             
             <!-- Lista de contatos -->
             <div class="contacts-list-container" id="contactsList">
-          <div style="text-align: center; padding: 40px; color: var(--text-secondary);">
-            <i class="fas fa-users" style="font-size: 24px; margin-bottom: 10px;"></i>
-            <div>Nenhum contato adicionado</div>
-          </div>
-        </div>
+              <!-- Contatos serão carregados aqui -->
+            </div>
             
             <!-- Formulário para adicionar novo contato -->
             <div class="add-contact-form">
@@ -1101,7 +1084,9 @@
             <!-- Seletor de contato para chat -->
             <div class="input-group">
               <label for="selectChatContact">Selecionar Contato para Conversar</label>
-              <select id="selectChatContact" style="padding: 18px 15px;"><option value="">Selecione um contato Polygon para conversar</option></select>
+              <select id="selectChatContact" style="padding: 18px 15px;">
+                <option value="">Selecione um contato</option>
+              </select>
             </div>
             
             <!-- Área do chat -->
@@ -1115,7 +1100,8 @@
               </div>
               
               <div class="chat-input-area">
-                <input type="text" class="chat-input" id="privateChatInput" placeholder="Digite sua mensagem..." onkeypress="handlePrivateChatKeyPress(event)" disabled>
+                <input type="text" class="chat-input" id="privateChatInput" placeholder="Digite sua mensagem..." 
+                       onkeypress="handlePrivateChatKeyPress(event)" disabled>
                 <button class="btn btn-primary btn-small" onclick="sendPrivateMessage()" disabled>
                   <i class="fas fa-paper-plane"></i>
                 </button>
@@ -1145,7 +1131,9 @@
             <!-- Seletor de contato para vídeo -->
             <div class="input-group">
               <label for="selectVideoContact">Selecionar Contato para Vídeo Chamada</label>
-              <select id="selectVideoContact" style="padding: 18px 15px;"><option value="">Selecione um contato Polygon para vídeo</option></select>
+              <select id="selectVideoContact" style="padding: 18px 15px;">
+                <option value="">Selecione um contato</option>
+              </select>
             </div>
             
             <!-- Área do vídeo -->
@@ -1246,7 +1234,8 @@
                 </div>
                 
                 <div class="chat-input-area">
-                  <input type="text" class="chat-input" id="groupChatInput" placeholder="Digite sua mensagem para o grupo..." onkeypress="handleGroupChatKeyPress(event)">
+                  <input type="text" class="chat-input" id="groupChatInput" placeholder="Digite sua mensagem para o grupo..." 
+                         onkeypress="handleGroupChatKeyPress(event)">
                   <button class="btn btn-primary btn-small" onclick="sendGroupMessage()">
                     <i class="fas fa-paper-plane"></i>
                   </button>
@@ -1350,87 +1339,6 @@
                 <i class="fas fa-shield-alt"></i> Suas reuniões de vídeo são criptografadas de ponta a ponta.
                 A conexão é direta entre os participantes, sem servidores intermediários.
               </p>
-            </div>
-          </div>
-        </div>
-        
-        <div style="margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--gold-primary);">
-          <div style="text-align: center; margin-bottom: 20px;">
-            <div style="width: 80px; height: 2px; background: var(--gradient-gold); margin: 0 auto 20px;"></div>
-            <h3 style="font-family: 'Cinzel', serif; color: var(--primary-color); margin-bottom: 15px;">
-              <i class="fas fa-graduation-cap"></i> Como Usar o Sistema de Comunicação
-            </h3>
-          </div>
-          
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px;">
-            <div style="background: var(--gradient-card); padding: 20px; border-radius: 12px; border: 1px solid var(--card-border);">
-              <h4 style="color: var(--primary-color); margin-bottom: 10px; font-size: 14px;">
-                <i class="fas fa-user-friends"></i> 1. Convidar Amigos
-              </h4>
-              <p style="color: var(--text-secondary); font-size: 11px; line-height: 1.5;">
-                • Vá para a aba "Contatos"<br>
-                • Adicione o endereço Polygon do seu amigo<br>
-                • Ambos precisam estar autorizados no sistema
-              </p>
-            </div>
-            
-            <div style="background: var(--gradient-card); padding: 20px; border-radius: 12px; border: 1px solid var(--card-border);">
-              <h4 style="color: var(--primary-color); margin-bottom: 10px; font-size: 14px;">
-                <i class="fas fa-key"></i> 2. Autorização
-              </h4>
-              <p style="color: var(--text-secondary); font-size: 11px; line-height: 1.5;">
-                • Autorize seu endereço Polygon na aba "Autorização"<br>
-                • Cada participante deve autorizar individualmente<br>
-                • A autorização é local e segura
-              </p>
-            </div>
-            
-            <div style="background: var(--gradient-card); padding: 20px; border-radius: 12px; border: 1px solid var(--card-border);">
-              <h4 style="color: var(--primary-color); margin-bottom: 10px; font-size: 14px;">
-                <i class="fas fa-video"></i> 3. Reuniões em Grupo
-              </h4>
-              <p style="color: var(--text-secondary); font-size: 11px; line-height: 1.5;">
-                • Crie uma reunião na aba "Vídeo em Grupo"<br>
-                • Compartilhe o código com os participantes<br>
-                • Todos entram com o mesmo código<br>
-                • Conexão P2P criptografada via WebRTC
-              </p>
-            </div>
-          </div>
-          
-          <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
-            <p style="color: var(--text-secondary); font-size: 10px; text-align: center; line-height: 1.4;">
-              <strong>✅ Sistema Real:</strong> WebRTC funcional com comunicação P2P • 
-              <strong>✅ Criptografia:</strong> Todas as conexões são criptografadas • 
-              <strong>✅ Sem Intermediários:</strong> Conexão direta entre participantes • 
-              <strong>✅ Responsivo:</strong> Vídeos otimizados para todos os dispositivos
-            </p>
-            <p style="color: var(--text-secondary); font-size: 9px; text-align: center; margin-top: 10px; font-style: italic;">
-              O sistema usa tecnologia WebRTC para comunicação em tempo real. As chamadas são diretas entre os participantes,
-              sem servidores intermediários. A qualidade se adapta automaticamente à conexão de rede.
-            </p>
-          </div>
-          
-          <div style="display: flex; justify-content: center; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
-            <div style="text-align: center;">
-              <div style="font-size: 14px; font-weight: 600; color: var(--success-color);">✅ Auditável</div>
-              <div style="font-size: 9px; color: var(--text-secondary);">Transações verificáveis</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 14px; font-weight: 600; color: var(--primary-color);">✅ Modular</div>
-              <div style="font-size: 9px; color: var(--text-secondary);">Chains independentes</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 14px; font-weight: 600; color: var(--accent-color);">✅ Seguro</div>
-              <div style="font-size: 9px; color: var(--text-secondary);">Isolamento completo</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 14px; font-weight: 600; color: var(--sapphire);">✅ Escalável</div>
-              <div style="font-size: 9px; color: var(--text-secondary);">100+ chains</div>
-            </div>
-            <div style="text-align: center;">
-              <div style="font-size: 14px; font-weight: 600; color: var(--ruby);">✅ Real</div>
-              <div style="font-size: 9px; color: var(--text-secondary);">Nada simulado</div>
             </div>
           </div>
         </div>
@@ -1600,10 +1508,10 @@ scope:rpc
   </div>
 
   <!-- Notificação -->
-  <div class="notification" id="notification" style="border-color: var(--success-color);">
-    <div id="notificationMessage">✅ Conexão RPC estabelecida! Latência: 540ms</div>
+  <div class="notification" id="notification">
+    <div id="notificationMessage">✅ Identidade Polygon conectada!</div>
   </div>
 
-  <script src="app.js" defer></script>
+  <script src="script.js"></script>
 </body>
 </html>
