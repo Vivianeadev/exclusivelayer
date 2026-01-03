@@ -1493,12 +1493,23 @@ scope:rpc
       </div>
     </div>
   </div>
+<!-- Notificação -->
+<div class="notification" id="notification">
+  <div id="notificationMessage">✅ Identidade Polygon conectada!</div>
+</div>
 
-  <!-- Notificação -->
-  <div class="notification" id="notification">
-    <div id="notificationMessage">✅ Identidade Polygon conectada!</div>
+<!-- Linha divisória de luxo e instruções finais -->
+<div style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 800px;">
+  <div style="width: 100%; height: 1px; background: var(--gradient-gold); margin-bottom: 10px;"></div>
+  <div style="text-align: center; color: var(--text-secondary); font-size: 9px; line-height: 1.3;">
+    <strong>Exclusive Wallet Premium</strong> • Sistema Polygon com RPC Infra Identity • 
+    100% Client-Side • Criptografia Ponta a Ponta • WebRTC Real • 
+    <span style="color: var(--success-color);">✅ Auditável • Modular • Seguro • Escalável • Real • Isolado</span>
   </div>
+</div>
 
+<!-- Script JavaScript -->
+<script>
 const { ethers } = window;
 let currentWallet = null;
 let currentTheme = 'luxury';
@@ -2215,15 +2226,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   console.log('Inicialização completa!');
 });
+</script>
 
-  <!-- Linha divisória de luxo e instruções finais -->
-  <div style="position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); width: 80%; max-width: 800px;">
-    <div style="width: 100%; height: 1px; background: var(--gradient-gold); margin-bottom: 10px;"></div>
-    <div style="text-align: center; color: var(--text-secondary); font-size: 9px; line-height: 1.3;">
-      <strong>Exclusive Wallet Premium</strong> • Sistema Polygon com RPC Infra Identity • 
-      100% Client-Side • Criptografia Ponta a Ponta • WebRTC Real • 
-      <span style="color: var(--success-color);">✅ Auditável • Modular • Seguro • Escalável • Real • Isolado</span>
-    </div>
-  </div>
 </body>
 </html>
+
+  
