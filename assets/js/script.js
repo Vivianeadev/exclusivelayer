@@ -1,65 +1,159 @@
-/* Todo o conteúdo JavaScript original aqui */
-/* Copie exatamente o conteúdo da tag <script> do seu arquivo original */
+// assets/js/script.js - VERSÃO CORRIGIDA
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎯 Exclusive Layer - JavaScript inicializado');
+    
+    // ================= MENU MOBILE =================
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            const isDisplayed = navLinks.style.display === 'flex';
+            navLinks.style.display = isDisplayed ? 'none' : 'flex';
+            
+            if (!isDisplayed) {
+                navLinks.style.flexDirection = 'column';
+                navLinks.style.position = 'absolute';
+                navLinks.style.top = '100%';
+                navLinks.style.left = '0';
+                navLinks.style.width = '100%';
+                navLinks.style.backgroundColor = 'white';
+                navLinks.style.padding = '20px';
+                navLinks.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+                navLinks.style.zIndex = '1000';
+            }
+        });
+        
+        // Fechar menu ao clicar em um link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    navLinks.style.display = 'none';
+                }
+            });
+        });
+    }
+    
+    // ================= SCROLL SUAVE =================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#' || targetId === '#!') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                // Fechar menu mobile se aberto
+                if (window.innerWidth <= 768 && navLinks && navLinks.style.display === 'flex') {
+                    navLinks.style.display = 'none';
+                }
+                
+                // Scroll suave
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Atualizar URL sem recarregar
+                history.pushState(null, null, targetId);
+            }
+        });
+    });
+    
+    // ================= FORMULÁRIO =================
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validação simples
+            const nome = this.querySelector('input[type="text"]').value.trim();
+            const email = this.querySelector('input[type="email"]').value.trim();
+            const mensagem = this.querySelector('textarea').value.trim();
+            
+            if (!nome || !email || !mensagem) {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+            
+            if (!isValidEmail(email)) {
+                alert('Por favor, insira um email válido.');
+                return;
+            }
+            
+            // Simulação de envio
+            console.log('📤 Enviando formulário:', { nome, email, mensagem });
+            alert('✅ Mensagem enviada com sucesso! Entraremos em contato em breve.');
+            this.reset();
+        });
+    }
+    
+    // ================= HEADER SCROLL =================
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (header) {
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.backdropFilter = 'blur(10px)';
+            } else {
+                header.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+                header.style.background = 'white';
+                header.style.backdropFilter = 'none';
+            }
+        }
+    });
+    
+    // ================= ANIMAÇÕES AO SCROLL =================
+    function initAnimations() {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos para animação
+        document.querySelectorAll('.service-card, .about-content, .contact-form').forEach(el => {
+            observer.observe(el);
+        });
+    }
+    
+    // ================= FUNÇÕES AUXILIARES =================
+    function isValidEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+    
+    // ================= INICIALIZAR TUDO =================
+    initAnimations();
+    
+    // Log de sucesso
+    console.log('✅ Todos os scripts foram inicializados com sucesso!');
+    
+    // Adicionar classe de JS carregado ao body
+    document.body.classList.add('js-loaded');
+});
 
-const { ethers } = window;
-let currentWallet = null;
-let currentTheme = 'luxury';
-let privateKeyVisible = false;
-let mnemonicVisible = false;
-let mnemonicPhrase = null;
-let mnemonicCreationTimer = null;
-let mnemonicTimerSeconds = 300;
-let isAddressRegistered = false;
+// Tratar erros globais
+window.addEventListener('error', function(e) {
+    console.error('❌ Erro no JavaScript:', e.error);
+});
 
-// INFRA IDENTITY - RPC CONFIGURAÇÃO
-let currentRpcProvider = 'https://polygon-rpc.com';
-let polygonProvider = null;
-let networkStatus = {
-  connected: false,
-  latency: 0,
-  lastBlock: 0,
-  gasPrice: '30'
-};
-
-// Configurações da Polygon
-const polygonConfig = {
-  name: 'Polygon',
-  chainId: 137,
-  symbol: 'MATIC',
-  explorer: 'https://polygonscan.com',
-  decimals: 18,
-  rpcUrls: [
-    'https://polygon-rpc.com',
-    'https://identitydynamic.avizaecosystem.workers.dev',
-    'https://rpc-mainnet.maticvigil.com',
-    'https://polygon-mainnet.infura.io/v3/',
-    'https://matic-mainnet.chainstacklabs.com'
-  ]
-};
-
-// LISTA DE 20 BLOCKCHAINS
-const blockchains = [
-  { id: 'polygon', name: 'Polygon', symbol: 'MATIC', chainId: 137 },
-  { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', chainId: 1 },
-  { id: 'bsc', name: 'BSC', symbol: 'BNB', chainId: 56 },
-  { id: 'avalanche', name: 'Avalanche', symbol: 'AVAX', chainId: 43114 },
-  { id: 'fantom', name: 'Fantom', symbol: 'FTM', chainId: 250 },
-  { id: 'arbitrum', name: 'Arbitrum', symbol: 'ETH', chainId: 42161 },
-  { id: 'optimism', name: 'Optimism', symbol: 'ETH', chainId: 10 },
-  { id: 'base', name: 'Base', symbol: 'ETH', chainId: 8453 },
-  { id: 'cronos', name: 'Cronos', symbol: 'CRO', chainId: 25 },
-  { id: 'harmony', name: 'Harmony', symbol: 'ONE', chainId: 1666600000 },
-  { id: 'kava', name: 'Kava', symbol: 'KAVA', chainId: 2222 },
-  { id: 'celo', name: 'Celo', symbol: 'CELO', chainId: 42220 },
-  { id: 'moonbeam', name: 'Moonbeam', symbol: 'GLMR', chainId: 1284 },
-  { id: 'moonriver', name: 'Moonriver', symbol: 'MOVR', chainId: 1285 },
-  { id: 'gnosis', name: 'Gnosis', symbol: 'xDAI', chainId: 100 },
-  { id: 'fuse', name: 'Fuse', symbol: 'FUSE', chainId: 122 },
-  { id: 'metis', name: 'Metis', symbol: 'METIS', chainId: 1088 },
-  { id: 'polygonzkevm', name: 'Polygon zkEVM', symbol: 'ETH', chainId: 1101 },
-  { id: 'linea', name: 'Linea', symbol: 'ETH', chainId: 59144 },
-  { id: 'scroll', name: 'Scroll', symbol: 'ETH', chainId: 534352 }
-];
-
-// Resto do código JavaScript mantido intacto...
-// ... (coloque todo o conteúdo JavaScript aqui)
+// Forçar recarregamento do CSS ao trocar de aba (para alguns bugs)
+document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+        const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
+        stylesheets.forEach(sheet => {
+            sheet.href = sheet.href.replace(/\?.*|$/, '?' + Date.now());
+        });
+    }
+});
