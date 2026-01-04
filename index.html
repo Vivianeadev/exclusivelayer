@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
   
-  <!-- CDN Libraries -->
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -289,11 +284,11 @@
   </div>
 
   <!-- Mnemonic Restore Modal -->
-  <div class="modal-overlay" id="mnemonicModal">
+  <div class="modal-overlay" id="mnemonicRestoreModal">
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title"><i class="fas fa-redo"></i> Restaurar Identidade Polygon</h3>
-        <button class="modal-close" id="closeMnemonicModal">×</button>
+        <button class="modal-close" id="closeMnemonicRestoreModal">×</button>
       </div>
       <div class="modal-body">
         <div class="input-group">
@@ -336,11 +331,11 @@
   </div>
 
   <!-- Other Chains Restore Modal -->
-  <div class="modal-overlay" id="mnemonicModalOther">
+  <div class="modal-overlay" id="mnemonicRestoreModalOther">
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title"><i class="fas fa-redo"></i> Restaurar Wallet - <span id="restoreChainName"></span></h3>
-        <button class="modal-close" id="closeMnemonicModalOther">×</button>
+        <button class="modal-close" id="closeMnemonicRestoreModalOther">×</button>
       </div>
       <div class="modal-body">
         <div class="input-group">
@@ -419,17 +414,18 @@
   </div>
 
   <!-- System Footer (Fixed Position) -->
-<div class="system-footer-container">
-  <div class="system-footer">
-    <div class="footer-divider"></div>
-    <div class="footer-text">
-      <strong>Exclusive Wallet Premium</strong> • Sistema Polygon com RPC Infra Identity • 
-      100% Client-Side • Criptografia Ponta a Ponta • WebRTC Real • 
-      <span class="footer-highlight">✅ Auditável • Modular • Seguro • Escalável • Real • Isolado</span>
+  <div class="system-footer-container">
+    <div class="system-footer">
+      <div class="footer-divider"></div>
+      <div class="footer-text">
+        <strong>Exclusive Wallet Premium</strong> • Sistema Polygon com RPC Infra Identity • 
+        100% Client-Side • Criptografia Ponta a Ponta • WebRTC Real • 
+        <span class="footer-highlight">✅ Auditável • Modular • Seguro • Escalável • Real • Isolado</span>
+      </div>
     </div>
   </div>
-</div>
-  <!-- JavaScript Libraries -->
+
+  <!-- CDN Libraries (movidas para o final do body para melhor performance) -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
