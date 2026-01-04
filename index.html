@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
   
+  <!-- CDN Libraries (mantidas no head para pré-carregamento) -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -174,42 +179,34 @@
       </div>
 
       <!-- Tab Contents -->
-      <!-- Overview Tab -->
       <div class="tab-content active" id="overviewTab">
         <!-- Conteúdo da Overview -->
       </div>
 
-      <!-- Wallet Tab -->
       <div class="tab-content" id="walletTab">
         <!-- Conteúdo da Wallet -->
       </div>
 
-      <!-- Blockchains Tab -->
       <div class="tab-content" id="blockchainsTab">
         <!-- Conteúdo das Blockchains -->
       </div>
 
-      <!-- Autorizações Tab -->
       <div class="tab-content authorizations-tab" id="authorizationsTab">
         <!-- Conteúdo das Autorizações -->
       </div>
 
-      <!-- Infra Identity Tab -->
       <div class="tab-content" id="infraIdentityTab">
         <!-- Conteúdo do Infra Identity -->
       </div>
 
-      <!-- Security Tab -->
       <div class="tab-content" id="securityTab">
         <!-- Conteúdo da Segurança -->
       </div>
 
-      <!-- Agenda Tab -->
       <div class="tab-content" id="agendaTab">
         <!-- Conteúdo da Agenda -->
       </div>
 
-      <!-- Communication Tab -->
       <div class="tab-content" id="communicationTab">
         <!-- Sub-navegação da aba de comunicação -->
         <div class="sub-tab-navigation">
@@ -255,8 +252,9 @@
       </div>
     </div>
   </div>
+  <!-- FIM do wallet-container -->
 
-  <!-- ========== MODALS ========== -->
+  <!-- ========== MODALS (fora do wallet-container para overlay correto) ========== -->
   <!-- Mnemonic Creation Modal -->
   <div class="modal-overlay" id="mnemonicCreationModal">
     <div class="modal-content">
@@ -425,11 +423,7 @@
     </div>
   </div>
 
-  <!-- CDN Libraries (movidas para o final do body para melhor performance) -->
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  
+  <!-- JavaScript Libraries (não duplicar - já estão no head) -->
   <!-- Local JavaScript Modules -->
   <script type="module" src="js/main.js"></script>
   <script type="module" src="js/wallet.js"></script>
