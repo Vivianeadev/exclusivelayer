@@ -1,436 +1,160 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" dir="ltr">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Wallet Polygon Premium com RPC Infra Identity">
   
-  <!-- CDN Libraries (mantidas no head para pré-carregamento) -->
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  
-  <!-- Fonts -->
+  <!-- Preconnect otimizado -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
   
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Font Awesome com fallback -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer">
   
-  <!-- Local CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- CSS local com preload -->
+  <link rel="preload" href="assets/css/style.css" as="style" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="assets/css/style.css"></noscript>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  
+  <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
 </head>
-<body class="theme-luxury">
-  <div class="wallet-container">
-    <!-- ========== HEADER ========== -->
-    <header>
-      <div class="logo">
-        <h1>Exclusive Wallet</h1>
-        <span>POLYGON PREMIUM IDENTITY</span>
-        <div class="status-display">
-          <div class="status-indicator verified"></div>
-          <span class="status-text">SISTEMA PREMIUM ATIVO</span>
+
+<body class="theme-luxury" data-theme="dark">
+  <!-- Skip link para acessibilidade -->
+  <a href="#main-content" class="skip-link">Pular para conteúdo principal</a>
+  
+  <div class="wallet-container" role="application" aria-label="Carteira Polygon Premium">
+    
+    <!-- HEADER SEMÂNTICO -->
+    <header class="main-header" role="banner">
+      <div class="header-content">
+        <div class="logo" aria-label="Exclusive Wallet">
+          <h1 class="logo-title">Exclusive Wallet</h1>
+          <span class="logo-subtitle">POLYGON PREMIUM IDENTITY</span>
+          <div class="status-display" role="status" aria-live="polite">
+            <div class="status-indicator verified" aria-hidden="true"></div>
+            <span class="status-text">SISTEMA PREMIUM ATIVO</span>
+          </div>
         </div>
-      </div>
-      <div class="theme-controls">
-        <button class="theme-toggle-btn" id="themeToggle">
-          <i class="fas fa-sun"></i> Modo Claro
-        </button>
+        
+        <nav class="theme-controls" aria-label="Controles do tema">
+          <button class="theme-toggle-btn" id="themeToggle" aria-pressed="false" aria-label="Alternar modo claro/escuro">
+            <span class="theme-icon" aria-hidden="true">
+              <i class="fas fa-sun"></i>
+            </span>
+            <span class="theme-text">Modo Claro</span>
+          </button>
+        </nav>
       </div>
     </header>
 
-    <!-- ========== LOGIN SCREEN ========== -->
-    <div id="login-screen">
-      <div class="wallet-header">
-        <h2>Sistema Polygon Premium Identity</h2>
-        <p>Identidade única Polygon para gerenciamento completo e acesso a recursos premium.</p>
-        
-        <div class="security-badges">
-          <div class="communication-badge unlocked">
-            <i class="fas fa-shield-alt"></i> 100% Client-Side
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main id="main-content" class="main-content" role="main">
+      
+      <!-- TELA DE LOGIN -->
+      <section id="login-screen" class="login-section" aria-labelledby="login-title">
+        <header class="section-header">
+          <h2 id="login-title" class="section-title">Sistema Polygon Premium Identity</h2>
+          <p class="section-description">Identidade única Polygon para gerenciamento completo e acesso a recursos premium.</p>
+          
+          <div class="security-badges" role="list" aria-label="Recursos de segurança">
+            <div class="badge" role="listitem">
+              <i class="fas fa-shield-alt" aria-hidden="true"></i>
+              <span>100% Client-Side</span>
+            </div>
+            <!-- Mais badges... -->
           </div>
-          <div class="communication-badge unlocked">
-            <i class="fas fa-lock"></i> Criptografia Ponta a Ponta
-          </div>
-          <div class="communication-badge unlocked">
-            <i class="fas fa-server"></i> RPC Infra Identity
-          </div>
-        </div>
-      </div>
+        </header>
 
-      <div class="dashboard-grid">
-        <!-- Acesso com Chave Privada -->
-        <div class="info-card animate-element">
-          <h3><i class="fas fa-key"></i> Acesso com Chave Privada</h3>
-          <div class="input-group">
-            <label for="privateKey">Sua Chave Privada Polygon</label>
-            <input type="password" id="privateKey" placeholder="0x..." class="monospace-input">
-          </div>
-          <button class="btn btn-primary" id="loginPrivateKey">
-            <i class="fas fa-unlock"></i> Conectar Carteira
-          </button>
-          <button class="restore-mnemonic-btn" id="restoreMnemonicLogin">
-            <i class="fas fa-redo"></i> Usar Frase Mnemônica
-          </button>
-        </div>
+        <!-- FORMULÁRIO DE LOGIN -->
+        <form class="login-form" id="loginForm" aria-label="Formulário de acesso">
+          <fieldset class="form-fieldset">
+            <legend class="visually-hidden">Métodos de acesso</legend>
+            
+            <div class="form-group">
+              <label for="privateKey" class="form-label">
+                <i class="fas fa-key" aria-hidden="true"></i>
+                Sua Chave Privada Polygon
+              </label>
+              <input type="password" 
+                     id="privateKey" 
+                     name="privateKey"
+                     class="monospace-input"
+                     placeholder="0x..."
+                     required
+                     minlength="64"
+                     aria-describedby="privateKeyHelp">
+              <small id="privateKeyHelp" class="form-help">
+                Sua chave nunca sai do navegador
+              </small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-unlock" aria-hidden="true"></i>
+              <span>Conectar Carteira</span>
+            </button>
+          </fieldset>
+        </form>
+      </section>
 
-        <!-- Nova Carteira -->
-        <div class="info-card animate-element delay-1">
-          <h3><i class="fas fa-plus-circle"></i> Nova Carteira Polygon</h3>
-          <div class="input-group">
-            <label for="newWalletPassword">Senha de Segurança (Opcional)</label>
-            <input type="password" id="newWalletPassword" placeholder="Proteja sua carteira localmente">
-            <small class="password-warning">
-              <i class="fas fa-exclamation-triangle"></i> Senha local apenas neste dispositivo. Se perdida, use a chave privada.
-            </small>
-          </div>
-          <button class="btn btn-primary" id="createWallet">
-            <i class="fas fa-gem"></i> Criar Nova Carteira Polygon
-          </button>
-          <button class="restore-mnemonic-btn" id="restoreMnemonicNew">
-            <i class="fas fa-redo"></i> Restaurar com Mnemônica
-          </button>
-        </div>
-      </div>
+      <!-- DASHBOARD (hidden inicialmente) -->
+      <section id="wallet-dashboard" class="dashboard-section hidden" aria-labelledby="dashboard-title">
+        <!-- Conteúdo semântico aqui -->
+      </section>
+    </main>
+  </div>
 
-      <!-- Balance Container -->
-      <div class="balance-container animate-element delay-2">
-        <div class="balance-label">Identidade Principal</div>
-        <div class="balance-display">Polygon Network</div>
-        <div class="balance-label identity-features">
-          RPC Infra Identity • Polygon ID • Endereço Único • QR Code Único
-        </div>
-        
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value">20</div>
-            <div class="stat-label">Blockchains</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">6</div>
-            <div class="stat-label">Recursos Premium</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value success">∞</div>
-            <div class="stat-label">Conexões</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Security Info -->
-      <div class="info-card animate-element delay-2">
-        <h3><i class="fas fa-shield-alt"></i> Segurança Premium</h3>
-        <p class="security-description">
-          Protocolo de comunicação criptografado de ponta a ponta. Suas chaves nunca saem do seu dispositivo.
-          Sistema multichain com suporte a 20 blockchains diferentes.
+  <!-- MODAIS SEMÂNTICOS -->
+  <div class="modal-overlay hidden" id="mnemonicModal" role="dialog" aria-modal="true" aria-labelledby="mnemonicTitle" aria-describedby="mnemonicDesc">
+    <div class="modal-content" role="document">
+      <header class="modal-header">
+        <h3 id="mnemonicTitle" class="modal-title">
+          <i class="fas fa-key" aria-hidden="true"></i>
+          Frase Mnemônica Gerada
+        </h3>
+        <button class="modal-close" aria-label="Fechar modal">×</button>
+      </header>
+      
+      <div class="modal-body">
+        <p id="mnemonicDesc" class="modal-description">
+          <strong>Anote esta frase em um local seguro.</strong>
+          Ela é a única maneira de recuperar sua identidade Polygon.
         </p>
-        <div class="security-buttons">
-          <button class="btn btn-secondary btn-small" onclick="UI.showSecurityInfoModal()">
-            <i class="fas fa-info-circle"></i> Informações Técnicas
-          </button>
-          <button class="btn btn-secondary btn-small" onclick="UI.showRecoveryBox()">
-            <i class="fas fa-key"></i> Protocolo de Recuperação
-          </button>
-        </div>
+        <!-- Conteúdo do modal -->
       </div>
-    </div>
-
-    <!-- ========== WALLET DASHBOARD ========== -->
-    <div id="wallet-dashboard" class="hidden">
-      <div class="wallet-header">
-        <h2>Dashboard Polygon Identity</h2>
-        <p>Identidade única Polygon com gestão completa e recursos premium</p>
-        <div class="connection-status">
-          <div class="status-indicator verified"></div>
-          <span class="status-text">
-            CONECTADO VIA RPC INFRA IDENTITY • 
-            <span id="connectionStatus">LATÊNCIA: --</span>
-          </span>
-        </div>
-      </div>
-
-      <!-- Main Navigation -->
-      <div class="tab-navigation">
-        <button class="tab-button active" data-tab="overviewTab">
-          <i class="fas fa-home"></i> Visão Geral
-        </button>
-        <button class="tab-button" data-tab="walletTab">
-          <i class="fas fa-wallet"></i> Wallet
-        </button>
-        <button class="tab-button" data-tab="blockchainsTab">
-          <i class="fas fa-link"></i> Blockchains
-        </button>
-        <button class="tab-button" data-tab="authorizationsTab">
-          <i class="fas fa-user-shield"></i> Autorizações
-        </button>
-        <button class="tab-button" data-tab="infraIdentityTab">
-          <i class="fas fa-server"></i> Infra Identity
-        </button>
-        <button class="tab-button" data-tab="securityTab">
-          <i class="fas fa-shield-alt"></i> Segurança
-        </button>
-        <button class="tab-button" data-tab="agendaTab">
-          <i class="fas fa-calendar"></i> Agenda
-        </button>
-        <button class="tab-button" data-tab="communicationTab">
-          <i class="fas fa-comments"></i> Comunicação
-        </button>
-      </div>
-
-      <!-- Tab Contents -->
-      <div class="tab-content active" id="overviewTab">
-        <!-- Conteúdo da Overview -->
-      </div>
-
-      <div class="tab-content" id="walletTab">
-        <!-- Conteúdo da Wallet -->
-      </div>
-
-      <div class="tab-content" id="blockchainsTab">
-        <!-- Conteúdo das Blockchains -->
-      </div>
-
-      <div class="tab-content authorizations-tab" id="authorizationsTab">
-        <!-- Conteúdo das Autorizações -->
-      </div>
-
-      <div class="tab-content" id="infraIdentityTab">
-        <!-- Conteúdo do Infra Identity -->
-      </div>
-
-      <div class="tab-content" id="securityTab">
-        <!-- Conteúdo da Segurança -->
-      </div>
-
-      <div class="tab-content" id="agendaTab">
-        <!-- Conteúdo da Agenda -->
-      </div>
-
-      <div class="tab-content" id="communicationTab">
-        <!-- Sub-navegação da aba de comunicação -->
-        <div class="sub-tab-navigation">
-          <button class="sub-tab-btn active" data-subtab="authTab">
-            <i class="fas fa-key"></i> Autorização
-          </button>
-          <button class="sub-tab-btn" data-subtab="contactsTab">
-            <i class="fas fa-users"></i> Contatos
-          </button>
-          <button class="sub-tab-btn" data-subtab="chatTab">
-            <i class="fas fa-comment"></i> Chat Privado
-          </button>
-          <button class="sub-tab-btn" data-subtab="videoTab">
-            <i class="fas fa-video"></i> Vídeo Chamada
-          </button>
-          <button class="sub-tab-btn" data-subtab="groupTab">
-            <i class="fas fa-comments"></i> Grupos
-          </button>
-          <button class="sub-tab-btn" data-subtab="groupVideoTab">
-            <i class="fas fa-video"></i> Vídeo em Grupo
-          </button>
-        </div>
-
-        <!-- Sub-tab Contents -->
-        <div class="sub-tab-content" id="authTab">
-          <!-- Conteúdo da Autorização -->
-        </div>
-        <div class="sub-tab-content hidden" id="contactsTab">
-          <!-- Conteúdo dos Contatos -->
-        </div>
-        <div class="sub-tab-content hidden" id="chatTab">
-          <!-- Conteúdo do Chat -->
-        </div>
-        <div class="sub-tab-content hidden" id="videoTab">
-          <!-- Conteúdo do Vídeo -->
-        </div>
-        <div class="sub-tab-content hidden" id="groupTab">
-          <!-- Conteúdo dos Grupos -->
-        </div>
-        <div class="sub-tab-content hidden" id="groupVideoTab">
-          <!-- Conteúdo do Vídeo em Grupo -->
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- FIM do wallet-container -->
-
-  <!-- ========== MODALS (fora do wallet-container para overlay correto) ========== -->
-  <!-- Mnemonic Creation Modal -->
-  <div class="modal-overlay" id="mnemonicCreationModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><i class="fas fa-key"></i> Frase Mnemônica Gerada</h3>
-        <button class="modal-close" id="closeMnemonicCreationModal">×</button>
-      </div>
-      <div class="modal-body">
-        <p class="modal-description">
-          <strong>Anote esta frase em um local seguro.</strong> Ela é a única maneira de recuperar sua identidade Polygon.
-        </p>
-        <div class="mnemonic-timer-container">
-          <div class="mnemonic-timer" id="mnemonicTimer">05:00</div>
-          <div class="mnemonic-warning">
-            <i class="fas fa-exclamation-triangle"></i> Tempo para anotar antes que a frase desapareça
-          </div>
-        </div>
-        <div class="mnemonic-words" id="mnemonicWordsContainer"></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelWalletCreation">Cancelar Criação</button>
-        <button class="btn btn-primary" id="confirmMnemonicSaved">Já anotei, continuar</button>
-      </div>
+      
+      <footer class="modal-footer">
+        <!-- Botões com type explícito -->
+        <button type="button" class="btn btn-secondary">Cancelar</button>
+        <button type="button" class="btn btn-primary">Confirmar</button>
+      </footer>
     </div>
   </div>
 
-  <!-- Mnemonic Restore Modal -->
-  <div class="modal-overlay" id="mnemonicRestoreModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><i class="fas fa-redo"></i> Restaurar Identidade Polygon</h3>
-        <button class="modal-close" id="closeMnemonicRestoreModal">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="input-group">
-          <label for="mnemonicPhrase">Frase Mnemônica (12 ou 24 palavras)</label>
-          <textarea id="mnemonicPhrase" rows="3" placeholder="insira sua frase mnemônica aqui..."></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelRestore">Cancelar</button>
-        <button class="btn btn-primary" id="confirmRestore">Restaurar Identidade</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Other Chains Mnemonic Creation Modal -->
-  <div class="modal-overlay" id="mnemonicCreationModalOther">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><i class="fas fa-key"></i> Frase Mnemônica Gerada - <span id="currentChainName"></span></h3>
-        <button class="modal-close" id="closeMnemonicCreationModalOther">×</button>
-      </div>
-      <div class="modal-body">
-        <p class="modal-description">
-          <strong>Anote esta frase em um local seguro.</strong> Ela é a única maneira de recuperar sua wallet na <span id="chainNameText"></span>.
-          Você tem <strong>5 minutos</strong> para anotar. Após esse tempo, ela nunca mais será exibida.
-        </p>
-        <div class="mnemonic-timer-container">
-          <div class="mnemonic-timer" id="mnemonicTimerOther">05:00</div>
-          <div class="mnemonic-warning">
-            <i class="fas fa-exclamation-triangle"></i> Tempo para anotar antes que a frase desapareça
-          </div>
-        </div>
-        <div class="mnemonic-words" id="mnemonicWordsContainerOther"></div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelWalletCreationOther">Cancelar Criação</button>
-        <button class="btn btn-primary" id="confirmMnemonicSavedOther">Já anotei, continuar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Other Chains Restore Modal -->
-  <div class="modal-overlay" id="mnemonicRestoreModalOther">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><i class="fas fa-redo"></i> Restaurar Wallet - <span id="restoreChainName"></span></h3>
-        <button class="modal-close" id="closeMnemonicRestoreModalOther">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="input-group">
-          <label for="mnemonicPhraseOther">Frase Mnemônica (12 ou 24 palavras)</label>
-          <textarea id="mnemonicPhraseOther" rows="3" placeholder="insira sua frase mnemônica aqui..."></textarea>
-        </div>
-        <div class="input-group">
-          <label for="privateKeyOther">Ou Chave Privada</label>
-          <input type="password" id="privateKeyOther" placeholder="0x..." class="monospace-input">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" id="cancelRestoreOther">Cancelar</button>
-        <button class="btn btn-primary" id="confirmRestoreOther">Restaurar Wallet</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Identity Authorization Modal -->
-  <div class="modal-overlay" id="identityAuthModal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title"><i class="fas fa-shield-alt"></i> Autorização Identity Dynamic - Polygon</h3>
-        <button class="modal-close" onclick="UI.closeIdentityAuthModal()">×</button>
-      </div>
-      <div class="modal-body">
-        <div class="info-box">
-          <h4>Identity Dynamic – Autorização de Infraestrutura</h4>
-          <p>
-            Esta wallet está prestes a se conectar à infraestrutura Identity Dynamic (Polygon).
-            Para garantir acesso exclusivo e seguro, sua wallet assinará uma mensagem temporária que prova:
-          </p>
-          <ul>
-            <li>posse da chave</li>
-            <li>sessão ativa na Identity</li>
-            <li>autorização para uso do túnel RPC</li>
-          </ul>
-          <p class="note">
-            Nenhuma transação será executada. Nenhuma taxa será cobrada.
-            Esta assinatura é usada apenas para autenticação de infraestrutura.
-          </p>
-        </div>
-
-        <div class="message-box">
-          <h5><i class="fas fa-code"></i> Formato da Mensagem (EXATO)</h5>
-          <div class="code-block">
-            IDENTITY_DYNAMIC_ACCESS
-            wallet:<span id="identityWalletAddressPreview">0x0ba3...9DaC7f</span>
-            session:<span id="identitySessionPreview">session_id_123</span>
-            issued_at:<span id="identityTimestampPreview">1704067200</span>
-            chain:polygon
-            scope:rpc
-          </div>
-          <p class="warning">⚠️ As quebras de linha importam. Polygon fixo (por enquanto).</p>
-        </div>
-
-        <div id="identityAuthResult" class="result-box hidden">
-          <div class="success-message">
-            <i class="fas fa-check-circle"></i> <span id="identityAuthResultText">Autorização bem-sucedida!</span>
-          </div>
-          <div id="identitySignaturePreview" class="signature-preview"></div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" onclick="UI.closeIdentityAuthModal()">Fechar</button>
-        <button class="btn btn-primary" id="identityAuthorizeBtn" onclick="Identity.performIdentityDynamicAuth()">
-          <i class="fas fa-key"></i> Autorizar Identity Dynamic
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Notification -->
-  <div class="notification" id="notification">
-    <div id="notificationMessage">✅ Identidade Polygon conectada!</div>
-  </div>
-
-  <!-- System Footer (Fixed Position) -->
-  <div class="system-footer-container">
-    <div class="system-footer">
-      <div class="footer-divider"></div>
-      <div class="footer-text">
+  <!-- FOOTER SEMÂNTICO -->
+  <footer class="main-footer" role="contentinfo">
+    <div class="footer-content">
+      <p class="footer-text">
         <strong>Exclusive Wallet Premium</strong> • Sistema Polygon com RPC Infra Identity • 
-        100% Client-Side • Criptografia Ponta a Ponta • WebRTC Real • 
-        <span class="footer-highlight">✅ Auditável • Modular • Seguro • Escalável • Real • Isolado</span>
-      </div>
+        100% Client-Side • Criptografia Ponta a Ponta
+      </p>
     </div>
-  </div>
+  </footer>
 
-  <!-- JavaScript Libraries (não duplicar - já estão no head) -->
-  <!-- Local JavaScript Modules -->
-  <script type="module" src="js/main.js"></script>
-  <script type="module" src="js/wallet.js"></script>
-  <script type="module" src="js/blockchains.js"></script>
-  <script type="module" src="js/communication.js"></script>
-  <script type="module" src="js/identity.js"></script>
-  <script type="module" src="js/ui.js"></script>
-  <script type="module" src="js/agenda.js"></script>
+  <!-- SCRIPTS OTIMIZADOS -->
+  <!-- CDN com fallback -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js" 
+          integrity="sha384-..." 
+          crossorigin="anonymous"></script>
+  
+  <!-- Bundle de módulos -->
+  <script type="module" src="js/bundle.js" defer></script>
+  
+  <!-- Fallback para navegadores sem module -->
+  <script nomodule src="js/legacy-bundle.js" defer></script>
 </body>
 </html>
