@@ -1,200 +1,85 @@
-// LOGIN FUNCTIONS
-async function connectPrivateKey() {
-  const pk = document.getElementById('privateKey').value.trim();
-  if(!pk){ 
-    showNotification('Insira sua chave privada Polygon', 'error');
-    return;
+// CONFIGURAÇÕES GLOBAIS
+let currentWallet = null;
+let currentChain = 'polygon';
+let theme = 'luxury';
+
+// INICIALIZAÇÃO
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Exclusive Wallet Premium iniciado');
+  
+  // Verificar wallet salva
+  const savedWallet = localStorage.getItem('wallet_privateKey');
+  if (savedWallet) {
+    try {
+      currentWallet = new ethers.Wallet(savedWallet);
+      showDashboard();
+    } catch (error) {
+      console.error('Erro ao restaurar wallet:', error);
+      localStorage.removeItem('wallet_privateKey');
+    }
   }
   
-  let privateKey = pk.replace(/\s/g, '');
-  if (!privateKey.startsWith('0x')) {
-    privateKey = '0x' + privateKey;
-  }
+  // Event Listeners básicos
+  document.getElementById('connectBtn').addEventListener('click', connectWallet);
+  document.getElementById('createBtn').addEventListener('click', createWallet);
+});
+
+// FUNÇÕES BÁSICAS
+async function connectWallet() {
+  const privateKey = document.getElementById('privateKey').value.trim();
+  if (!privateKey) return alert('Insira a chave privada');
   
   try {
     currentWallet = new ethers.Wallet(privateKey);
-    localStorage.setItem('exclusiveWalletPK', privateKey);
-    
-    if (localStorage.getItem('identityDynamicAuth') === 'true') {
-      identityDynamicAuthorized = true;
-      identityDynamicSessionId = localStorage.getItem('identityDynamicSession');
-      identityDynamicSignature = localStorage.getItem('identityDynamicSignature');
-    }
-    
-    initializeRpcProvider();
-    
-    showNotification(`✅ Identidade Polygon conectada! Endereço: ${currentWallet.address.substring(0, 10)}...`, 'success');
-    showWalletDashboard();
-    
+    localStorage.setItem('wallet_privateKey', privateKey);
+    showDashboard();
+    alert('Conectado!');
   } catch (error) {
-    console.error('Erro ao conectar identidade Polygon:', error);
-    showNotification('Erro ao conectar identidade Polygon. Verifique sua chave privada.', 'error');
+    alert('Chave inválida');
   }
 }
 
-async function createNewWallet() {
+async function createWallet() {
   try {
-    showNotification('Criando identidade Polygon premium...', 'info');
-    
     const wallet = ethers.Wallet.createRandom();
     currentWallet = wallet;
-    mnemonicPhrase = wallet.mnemonic.phrase;
+    localStorage.setItem('wallet_privateKey', wallet.privateKey);
     
-    localStorage.setItem('exclusiveWalletPK', currentWallet.privateKey);
-    
-    const password = document.getElementById('newWalletPassword').value.trim();
-    if (password) {
-      localStorage.setItem('exw_psw', password);
-      showNotification('Senha local salva (apenas neste dispositivo).', 'info');
-    }
-    
-    showMnemonicCreationModal(mnemonicPhrase);
-    
+    alert(`Nova wallet criada!\nEndereço: ${wallet.address}\nSalve a chave privada!`);
+    showDashboard();
   } catch (error) {
-    console.error('Erro ao criar identidade Polygon:', error);
-    showNotification('Erro ao criar identidade Polygon premium: ' + error.message, 'error');
+    alert('Erro ao criar wallet');
   }
 }
 
-function showMnemonicCreationModal(mnemonic) {
-  const modal = document.getElementById('mnemonicCreationModal');
-  const wordsContainer = document.getElementById('mnemonicWordsContainer');
-  const timerElement = document.getElementById('mnemonicTimer');
+function showDashboard() {
+  document.getElementById('login-screen').classList.add('hidden');
+  document.getElementById('dashboard').classList.remove('hidden');
   
-  const words = mnemonic.split(' ');
-  wordsContainer.innerHTML = '';
-  
-  words.forEach((word, index) => {
-    const wordElement = document.createElement('div');
-    wordElement.className = 'mnemonic-word';
-    wordElement.setAttribute('data-index', index + 1);
-    wordElement.textContent = word;
-    wordsContainer.appendChild(wordElement);
-  });
-  
-  mnemonicTimerSeconds = 300;
-  updateMnemonicTimer();
-  mnemonicCreationTimer = setInterval(updateMnemonicTimer, 1000);
-  
-  modal.classList.add('active');
+  // Carregar dados iniciais
+  loadDashboard();
 }
 
-function updateMnemonicTimer() {
-  const timerElement = document.getElementById('mnemonicTimer');
-  if (!timerElement) return;
+async function loadDashboard() {
+  if (!currentWallet) return;
   
-  mnemonicTimerSeconds--;
+  // Exibir endereço
+  document.getElementById('walletAddress').textContent = 
+    `${currentWallet.address.slice(0, 10)}...${currentWallet.address.slice(-8)}`;
   
-  if (mnemonicTimerSeconds <= 0) {
-    clearInterval(mnemonicCreationTimer);
-    timerElement.textContent = '00:00';
-    showNotification('Tempo esgotado! A criação da identidade foi cancelada.', 'error');
-    closeMnemonicCreationModal();
-    return;
-  }
-  
-  const minutes = Math.floor(mnemonicTimerSeconds / 60);
-  const seconds = mnemonicTimerSeconds % 60;
-  timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  // Buscar saldo da chain atual
+  const balance = await getChainBalance(currentChain, currentWallet.address);
+  document.getElementById('balance').textContent = `${balance} ${BLOCKCHAINS[currentChain].symbol}`;
 }
 
-function closeMnemonicCreationModal() {
-  const modal = document.getElementById('mnemonicCreationModal');
-  modal.classList.remove('active');
-  clearInterval(mnemonicCreationTimer);
-  
-  currentWallet = null;
-  mnemonicPhrase = null;
-  localStorage.removeItem('exclusiveWalletPK');
-  localStorage.removeItem('exw_psw');
+// TROCAR TEMA
+function toggleTheme() {
+  theme = theme === 'light' ? 'luxury' : 'light';
+  document.body.className = `theme-${theme}`;
+  localStorage.setItem('wallet_theme', theme);
 }
 
-function confirmMnemonicSaved() {
-  clearInterval(mnemonicCreationTimer);
-  
-  initializeRpcProvider();
-  
-  showNotification(`✅ Identidade Polygon criada! Endereço: ${currentWallet.address.substring(0, 10)}...`, 'success');
-  showNotification('⚠️ SALVE SUA CHAVE PRIVADA E FRASE MNEMÔNICA!', 'warning');
-  closeMnemonicCreationModal();
-  showWalletDashboard();
-}
-
-function openMnemonicModal() {
-  document.getElementById('mnemonicModal').classList.add('active');
-}
-
-function closeMnemonicModal() {
-  document.getElementById('mnemonicModal').classList.remove('active');
-  document.getElementById('mnemonicPhrase').value = '';
-}
-
-function restoreWalletFromMnemonic() {
-  const mnemonicPhraseInput = document.getElementById('mnemonicPhrase').value.trim();
-
-  if (!mnemonicPhraseInput) {
-    showNotification('Por favor, insira a frase mnemônica.', 'error');
-    return;
-  }
-
-  try {
-    if (!ethers.Mnemonic.isValidMnemonic(mnemonicPhraseInput)) {
-      showNotification('Frase mnemônica inválida. Verifique as palavras.', 'error');
-      return;
-    }
-
-    const wallet = ethers.Wallet.fromPhrase(mnemonicPhraseInput);
-    currentWallet = wallet;
-    mnemonicPhrase = mnemonicPhraseInput;
-
-    localStorage.setItem('exclusiveWalletPK', currentWallet.privateKey);
-    
-    initializeRpcProvider();
-
-    closeMnemonicModal();
-    showNotification(`✅ Identidade Polygon restaurada! Endereço: ${currentWallet.address.substring(0, 10)}...`, 'success');
-    showWalletDashboard();
-
-  } catch (error) {
-    console.error('Erro ao restaurar identidade Polygon:', error);
-    showNotification('Erro ao restaurar identidade Polygon: ' + error.message, 'error');
-  }
-}
-
-function showWalletDashboard() {
-  document.getElementById('login-screen').classList.add('fade-out');
-  
-  setTimeout(() => {
-    document.getElementById('login-screen').classList.add('hidden');
-    document.getElementById('wallet-dashboard').classList.remove('hidden');
-    document.getElementById('wallet-dashboard').classList.add('fade-in');
-    
-    updateSensitiveDataDisplay();
-    updateOverview();
-    refreshBalance();
-    testRpcConnection();
-    initializeBlockchainButtons();
-    
-    loadContacts();
-    updateAuthorizationStatus();
-    
-  }, 800);
-}
-
-// Event listeners para login (adicione ao main.js ou mantenha aqui)
-document.addEventListener('DOMContentLoaded', function() {
-  document.getElementById('loginPrivateKey').addEventListener('click', connectPrivateKey);
-  document.getElementById('createWallet').addEventListener('click', createNewWallet);
-  document.getElementById('restoreMnemonicLogin').addEventListener('click', openMnemonicModal);
-  document.getElementById('restoreMnemonicNew').addEventListener('click', openMnemonicModal);
-  
-  // Modal de Mnemônica (Criação)
-  document.getElementById('closeMnemonicCreationModal').addEventListener('click', closeMnemonicCreationModal);
-  document.getElementById('cancelWalletCreation').addEventListener('click', closeMnemonicCreationModal);
-  document.getElementById('confirmMnemonicSaved').addEventListener('click', confirmMnemonicSaved);
-  
-  // Modal de Mnemônica (Restauração)
-  document.getElementById('closeMnemonicModal').addEventListener('click', closeMnemonicModal);
-  document.getElementById('cancelRestore').addEventListener('click', closeMnemonicModal);
-  document.getElementById('confirmRestore').addEventListener('click', restoreWalletFromMnemonic);
-});
+// EXPORTAR
+window.toggleTheme = toggleTheme;
+window.currentWallet = currentWallet;
+window.currentChain = currentChain;
