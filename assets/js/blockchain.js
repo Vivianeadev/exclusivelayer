@@ -1,439 +1,440 @@
-// VARIÁVEIS DE BLOCKCHAINS
-const otherChainsWallets = {};
-let currentSelectedChain = 'polygon';
-let mnemonicCreationTimerOther = null;
-let mnemonicTimerSecondsOther = 300;
-let currentChainForCreation = '';
+// blockchains.js - Sistema de Gerenciamento de Blockchains
+const blockchains = [
+  {
+    id: 'polygon',
+    name: 'Polygon',
+    symbol: 'MATIC',
+    chainId: 137,
+    rpcUrls: [
+      'https://polygon-rpc.com',
+      'https://identitydynamic.avizaecosystem.workers.dev',
+      'https://rpc-mainnet.maticvigil.com',
+      'https://polygon-mainnet.infura.io/v3/',
+      'https://matic-mainnet.chainstacklabs.com'
+    ],
+    explorer: 'https://polygonscan.com',
+    decimals: 18,
+    color: '#8247E5',
+    icon: 'fas fa-gem'
+  },
+  {
+    id: 'ethereum',
+    name: 'Ethereum',
+    symbol: 'ETH',
+    chainId: 1,
+    rpcUrls: ['https://mainnet.infura.io/v3/'],
+    explorer: 'https://etherscan.io',
+    decimals: 18,
+    color: '#627EEA',
+    icon: 'fab fa-ethereum'
+  },
+  {
+    id: 'bsc',
+    name: 'BSC',
+    symbol: 'BNB',
+    chainId: 56,
+    rpcUrls: ['https://bsc-dataseed.binance.org/'],
+    explorer: 'https://bscscan.com',
+    decimals: 18,
+    color: '#F0B90B',
+    icon: 'fas fa-exchange-alt'
+  },
+  {
+    id: 'avalanche',
+    name: 'Avalanche',
+    symbol: 'AVAX',
+    chainId: 43114,
+    rpcUrls: ['https://api.avax.network/ext/bc/C/rpc'],
+    explorer: 'https://snowtrace.io',
+    decimals: 18,
+    color: '#E84142',
+    icon: 'fas fa-snowflake'
+  },
+  {
+    id: 'fantom',
+    name: 'Fantom',
+    symbol: 'FTM',
+    chainId: 250,
+    rpcUrls: ['https://rpc.ftm.tools/'],
+    explorer: 'https://ftmscan.com',
+    decimals: 18,
+    color: '#1969FF',
+    icon: 'fas fa-bolt'
+  },
+  {
+    id: 'arbitrum',
+    name: 'Arbitrum',
+    symbol: 'ETH',
+    chainId: 42161,
+    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+    explorer: 'https://arbiscan.io',
+    decimals: 18,
+    color: '#28A0F0',
+    icon: 'fas fa-layer-group'
+  },
+  {
+    id: 'optimism',
+    name: 'Optimism',
+    symbol: 'ETH',
+    chainId: 10,
+    rpcUrls: ['https://mainnet.optimism.io'],
+    explorer: 'https://optimistic.etherscan.io',
+    decimals: 18,
+    color: '#FF0420',
+    icon: 'fas fa-chart-line'
+  },
+  {
+    id: 'base',
+    name: 'Base',
+    symbol: 'ETH',
+    chainId: 8453,
+    rpcUrls: ['https://mainnet.base.org'],
+    explorer: 'https://basescan.org',
+    decimals: 18,
+    color: '#0052FF',
+    icon: 'fas fa-database'
+  },
+  {
+    id: 'cronos',
+    name: 'Cronos',
+    symbol: 'CRO',
+    chainId: 25,
+    rpcUrls: ['https://evm.cronos.org'],
+    explorer: 'https://cronoscan.com',
+    decimals: 18,
+    color: '#121926',
+    icon: 'fas fa-clock'
+  },
+  {
+    id: 'harmony',
+    name: 'Harmony',
+    symbol: 'ONE',
+    chainId: 1666600000,
+    rpcUrls: ['https://api.harmony.one'],
+    explorer: 'https://explorer.harmony.one',
+    decimals: 18,
+    color: '#00AEE9',
+    icon: 'fas fa-music'
+  },
+  {
+    id: 'kava',
+    name: 'Kava',
+    symbol: 'KAVA',
+    chainId: 2222,
+    rpcUrls: ['https://evm.kava.io'],
+    explorer: 'https://explorer.kava.io',
+    decimals: 18,
+    color: '#FF433E',
+    icon: 'fas fa-shield-alt'
+  },
+  {
+    id: 'celo',
+    name: 'Celo',
+    symbol: 'CELO',
+    chainId: 42220,
+    rpcUrls: ['https://forno.celo.org'],
+    explorer: 'https://celoscan.io',
+    decimals: 18,
+    color: '#35D07F',
+    icon: 'fas fa-leaf'
+  },
+  {
+    id: 'moonbeam',
+    name: 'Moonbeam',
+    symbol: 'GLMR',
+    chainId: 1284,
+    rpcUrls: ['https://rpc.api.moonbeam.network'],
+    explorer: 'https://moonscan.io',
+    decimals: 18,
+    color: '#53CBC9',
+    icon: 'fas fa-moon'
+  },
+  {
+    id: 'moonriver',
+    name: 'Moonriver',
+    symbol: 'MOVR',
+    chainId: 1285,
+    rpcUrls: ['https://rpc.api.moonriver.moonbeam.network'],
+    explorer: 'https://moonriver.moonscan.io',
+    decimals: 18,
+    color: '#F3B404',
+    icon: 'fas fa-water'
+  },
+  {
+    id: 'gnosis',
+    name: 'Gnosis',
+    symbol: 'xDAI',
+    chainId: 100,
+    rpcUrls: ['https://rpc.gnosischain.com'],
+    explorer: 'https://gnosisscan.io',
+    decimals: 18,
+    color: '#04795B',
+    icon: 'fas fa-brain'
+  },
+  {
+    id: 'fuse',
+    name: 'Fuse',
+    symbol: 'FUSE',
+    chainId: 122,
+    rpcUrls: ['https://rpc.fuse.io'],
+    explorer: 'https://explorer.fuse.io',
+    decimals: 18,
+    color: '#46E8B6',
+    icon: 'fas fa-bolt'
+  },
+  {
+    id: 'metis',
+    name: 'Metis',
+    symbol: 'METIS',
+    chainId: 1088,
+    rpcUrls: ['https://andromeda.metis.io/?owner=1088'],
+    explorer: 'https://andromeda-explorer.metis.io',
+    decimals: 18,
+    color: '#00D3D5',
+    icon: 'fas fa-network-wired'
+  },
+  {
+    id: 'polygonzkevm',
+    name: 'Polygon zkEVM',
+    symbol: 'ETH',
+    chainId: 1101,
+    rpcUrls: ['https://zkevm-rpc.com'],
+    explorer: 'https://zkevm.polygonscan.com',
+    decimals: 18,
+    color: '#8247E5',
+    icon: 'fas fa-lock'
+  },
+  {
+    id: 'linea',
+    name: 'Linea',
+    symbol: 'ETH',
+    chainId: 59144,
+    rpcUrls: ['https://rpc.linea.build'],
+    explorer: 'https://lineascan.build',
+    decimals: 18,
+    color: '#121212',
+    icon: 'fas fa-road'
+  },
+  {
+    id: 'scroll',
+    name: 'Scroll',
+    symbol: 'ETH',
+    chainId: 534352,
+    rpcUrls: ['https://rpc.scroll.io'],
+    explorer: 'https://scrollscan.com',
+    decimals: 18,
+    color: '#FFE66D',
+    icon: 'fas fa-scroll'
+  }
+];
 
-// INICIALIZAR BOTÕES DE BLOCKCHAINS
-function initializeBlockchainButtons() {
-  const container = document.getElementById('blockchainButtonsContainer');
-  if (!container) return;
+// Sistema de Gerenciamento de Blockchains
+const BlockchainManager = {
+  // Estado
+  currentSelectedChain: 'polygon',
+  realChainBalances: {},
+  otherChainsWallets: {},
   
-  container.innerHTML = '';
+  // Inicializar
+  initialize: function() {
+    this.initializeBalances();
+    this.initializeBlockchainButtons();
+  },
   
-  blockchains.forEach(chain => {
-    const button = document.createElement('button');
-    button.className = 'blockchain-button';
-    button.setAttribute('data-chain', chain.id);
-    button.textContent = chain.name;
-    
-    if (chain.id === currentSelectedChain) {
-      button.classList.add('active');
-    }
-    
-    button.addEventListener('click', () => {
-      selectBlockchain(chain.id);
+  // Inicializar saldos
+  initializeBalances: function() {
+    blockchains.forEach(chain => {
+      this.realChainBalances[chain.id] = '0.0000';
     });
     
-    container.appendChild(button);
-  });
-}
-
-// SELECIONAR UMA BLOCKCHAIN
-async function selectBlockchain(chainId) {
-  document.querySelectorAll('.blockchain-button').forEach(btn => {
-    btn.classList.remove('active');
-    if (btn.getAttribute('data-chain') === chainId) {
-      btn.classList.add('active');
+    // Restaurar do localStorage
+    const savedBalances = localStorage.getItem('exclusiveWalletChainBalances');
+    if (savedBalances) {
+      const parsedBalances = JSON.parse(savedBalances);
+      Object.keys(parsedBalances).forEach(chainId => {
+        if (this.realChainBalances[chainId] !== undefined) {
+          this.realChainBalances[chainId] = parsedBalances[chainId];
+        }
+      });
     }
-  });
+  },
   
-  currentSelectedChain = chainId;
+  // Salvar saldos
+  saveBalances: function() {
+    localStorage.setItem('exclusiveWalletChainBalances', JSON.stringify(this.realChainBalances));
+  },
   
-  // Ir direto para a aba wallet
-  switchTab('walletTab');
+  // Atualizar saldo
+  updateChainBalance: function(chainId, balance) {
+    const formattedBalance = parseFloat(balance).toFixed(4);
+    this.realChainBalances[chainId] = formattedBalance;
+    this.saveBalances();
+    
+    // Atualizar UI se for a chain atual
+    if (chainId === this.currentSelectedChain) {
+      this.updateCurrentChainDisplay();
+    }
+    
+    return formattedBalance;
+  },
   
-  // Atualizar o saldo da chain selecionada
-  await updateCurrentChainBalance();
-  
-  if (chainId === 'polygon') {
-    showNotification(`Dashboard Polygon carregado`, 'success');
-  } else {
-    const chainName = blockchains.find(c => c.id === chainId).name;
-    showNotification(`Dashboard da ${chainName} carregado`, 'success');
-  }
-}
-
-// MOSTRAR A WALLET CORRETA PARA A CHAIN SELECIONADA
-function showCorrectWalletForChain() {
-  document.querySelectorAll('.wallet-tab-other').forEach(el => {
-    el.classList.remove('active');
-    el.style.display = 'none';
-  });
-  
-  document.getElementById('walletTab').style.display = 'none';
-  
-  if (currentSelectedChain === 'polygon') {
-    document.getElementById('walletTab').style.display = 'block';
-    return;
-  }
-  
-  const otherWalletId = `walletTab${currentSelectedChain.charAt(0).toUpperCase() + currentSelectedChain.slice(1)}`;
-  let otherWallet = document.getElementById(otherWalletId);
-  
-  if (!otherWallet) {
-    // Criar wallet para a chain se não existir
-    const chain = blockchains.find(c => c.id === currentSelectedChain);
+  // Atualizar exibição da chain atual
+  updateCurrentChainDisplay: function() {
+    const balance = this.realChainBalances[this.currentSelectedChain] || '0.0000';
+    const chain = this.getChainById(this.currentSelectedChain);
+    
+    const balanceElement = document.getElementById('currentChainBalance');
+    if (balanceElement) {
+      balanceElement.textContent = balance;
+    }
+    
+    // Atualizar valor em USD
     if (chain) {
-      // Em vez de criar automaticamente, apenas mostrar os botões de criação
-      createChainWalletInterface(currentSelectedChain);
-      otherWallet = document.getElementById(otherWalletId);
-    }
-  }
-  
-  if (otherWallet) {
-    otherWallet.classList.add('active');
-    otherWallet.style.display = 'block';
-  }
-}
-
-// CRIAR INTERFACE DE WALLET PARA UMA CHAIN ESPECÍFICA
-function createChainWalletInterface(chainId) {
-  const chain = blockchains.find(c => c.id === chainId);
-  if (!chain) return;
-  
-  const walletTab = document.getElementById('walletTab');
-  if (!walletTab) return;
-  
-  const newWallet = walletTab.cloneNode(true);
-  newWallet.id = `walletTab${chainId.charAt(0).toUpperCase() + chainId.slice(1)}`;
-  newWallet.className = 'tab-content wallet-tab-other';
-  
-  const chainName = chain.name;
-  const chainSymbol = chain.symbol;
-  
-  // Atualizar textos
-  const titleElement = newWallet.querySelector('.wallet-header h2');
-  if (titleElement) {
-    titleElement.innerHTML = `<i class="fas fa-wallet"></i> Wallet ${chainName} Premium`;
-  }
-  
-  const subtitleElement = newWallet.querySelector('.wallet-header p');
-  if (subtitleElement) {
-    subtitleElement.textContent = `Gerencie seus fundos na ${chainName} com elegância minimalista e funcionalidades completas`;
-  }
-  
-  // Atualizar elementos de saldo
-  const balanceLabel = newWallet.querySelector('.balance-main-container .balance-label:nth-child(1)');
-  if (balanceLabel) {
-    balanceLabel.textContent = `Saldo na ${chainName} Network`;
-  }
-  
-  const balanceDisplay = newWallet.querySelector('.balance-main-container .balance-display');
-  if (balanceDisplay) {
-    balanceDisplay.id = `currentChainBalance${chainId.charAt(0).toUpperCase() + chainId.slice(1)}`;
-    balanceDisplay.textContent = realChainBalances[chainId] || '0.0000';
-  }
-  
-  const balanceSymbol = newWallet.querySelector('.balance-main-container .balance-label:nth-child(3)');
-  if (balanceSymbol) {
-    balanceSymbol.textContent = chainSymbol;
-  }
-  
-  // Atualizar IDs dos elementos
-  updateWalletElementIds(newWallet, chainId);
-  
-  // Adicionar botões específicos da chain
-  addChainSpecificButtons(newWallet, chainName, chainId);
-  
-  // Adicionar ao DOM
-  document.getElementById('wallet-dashboard').appendChild(newWallet);
-}
-
-// ATUALIZAR IDs DOS ELEMENTOS NA WALLET CLONADA
-function updateWalletElementIds(walletElement, chainId) {
-  const suffix = chainId.charAt(0).toUpperCase() + chainId.slice(1);
-  
-  // Atualizar todos os elementos com ID
-  const allElements = walletElement.querySelectorAll('[id]');
-  allElements.forEach(el => {
-    if (el.id && !el.id.endsWith(suffix)) {
-      el.id = `${el.id}${suffix}`;
-    }
-  });
-  
-  // Atualizar labels
-  const labels = walletElement.querySelectorAll('label[for]');
-  labels.forEach(label => {
-    const oldFor = label.getAttribute('for');
-    if (oldFor && !oldFor.endsWith(suffix)) {
-      label.setAttribute('for', `${oldFor}${suffix}`);
-    }
-  });
-}
-
-// ADICIONAR BOTÕES ESPECÍFICOS DA CHAIN
-function addChainSpecificButtons(walletElement, chainName, chainId) {
-  const walletOperationsGrid = walletElement.querySelector('.wallet-operations-grid');
-  if (walletOperationsGrid) {
-    // Criar container para botões específicos
-    const chainButtonsContainer = document.createElement('div');
-    chainButtonsContainer.className = 'chain-specific-buttons';
-    chainButtonsContainer.innerHTML = `
-      <button class="btn btn-primary btn-small" onclick="createWalletForChain('${chainName}')">
-        <i class="fas fa-gem"></i> Criar Wallet ${chainName}
-      </button>
-      <button class="btn btn-secondary btn-small" onclick="restoreWalletForChain('${chainName}')">
-        <i class="fas fa-redo"></i> Recuperar Wallet
-      </button>
-    `;
-    
-    walletOperationsGrid.parentNode.insertBefore(chainButtonsContainer, walletOperationsGrid.nextSibling);
-  }
-  
-  // Configurar botões de ação
-  const actionButtons = walletElement.querySelectorAll('.action-btn');
-  actionButtons.forEach((btn, index) => {
-    btn.onclick = null;
-    if (index === 0) {
-      btn.onclick = () => showReceiveModalOther(chainName);
-    } else if (index === 1) {
-      btn.onclick = () => showSendModalOther(chainName);
-    } else if (index === 2) {
-      btn.onclick = () => refreshBalanceOther(chainName);
-    }
-  });
-}
-
-// CRIAR WALLET PARA OUTRA CHAIN
-function createWalletForChain(chainName) {
-  currentChainForCreation = chainName.toLowerCase();
-  
-  try {
-    showNotification(`Criando wallet ${chainName} premium...`, 'info');
-    
-    const wallet = ethers.Wallet.createRandom();
-    otherChainsWallets[currentChainForCreation] = {
-      wallet: wallet,
-      mnemonic: wallet.mnemonic.phrase
-    };
-    
-    localStorage.setItem(`exclusiveWallet_${currentChainForCreation}`, wallet.privateKey);
-    localStorage.setItem(`exclusiveWalletMnemonic_${currentChainForCreation}`, wallet.mnemonic.phrase);
-    
-    // Gerar saldo aleatório para demonstração
-    const randomBalance = (Math.random() * 10).toFixed(4);
-    realChainBalances[currentChainForCreation] = randomBalance;
-    
-    showMnemonicCreationModalOther(wallet.mnemonic.phrase, chainName);
-    
-  } catch (error) {
-    console.error(`Erro ao criar wallet ${chainName}:`, error);
-    showNotification(`Erro ao criar wallet ${chainName}: ` + error.message, 'error');
-  }
-}
-
-function showMnemonicCreationModalOther(mnemonic, chainName) {
-  const modal = document.getElementById('mnemonicCreationModalOther');
-  const wordsContainer = document.getElementById('mnemonicWordsContainerOther');
-  const timerElement = document.getElementById('mnemonicTimerOther');
-  const chainNameElement = document.getElementById('currentChainName');
-  const chainNameText = document.getElementById('chainNameText');
-  
-  chainNameElement.textContent = chainName;
-  chainNameText.textContent = chainName;
-  
-  const words = mnemonic.split(' ');
-  wordsContainer.innerHTML = '';
-  
-  words.forEach((word, index) => {
-    const wordElement = document.createElement('div');
-    wordElement.className = 'mnemonic-word';
-    wordElement.setAttribute('data-index', index + 1);
-    wordElement.textContent = word;
-    wordsContainer.appendChild(wordElement);
-  });
-  
-  mnemonicTimerSecondsOther = 300;
-  updateMnemonicTimerOther();
-  mnemonicCreationTimerOther = setInterval(updateMnemonicTimerOther, 1000);
-  
-  modal.classList.add('active');
-}
-
-function updateMnemonicTimerOther() {
-  const timerElement = document.getElementById('mnemonicTimerOther');
-  if (!timerElement) return;
-  
-  mnemonicTimerSecondsOther--;
-  
-  if (mnemonicTimerSecondsOther <= 0) {
-    clearInterval(mnemonicCreationTimerOther);
-    timerElement.textContent = '00:00';
-    showNotification('Tempo esgotado! A criação da wallet foi cancelada.', 'error');
-    closeMnemonicCreationModalOther();
-    return;
-  }
-  
-  const minutes = Math.floor(mnemonicTimerSecondsOther / 60);
-  const seconds = mnemonicTimerSecondsOther % 60;
-  timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-}
-
-function closeMnemonicCreationModalOther() {
-  const modal = document.getElementById('mnemonicCreationModalOther');
-  modal.classList.remove('active');
-  clearInterval(mnemonicCreationTimerOther);
-  
-  delete otherChainsWallets[currentChainForCreation];
-  localStorage.removeItem(`exclusiveWallet_${currentChainForCreation}`);
-  localStorage.removeItem(`exclusiveWalletMnemonic_${currentChainForCreation}`);
-  
-  currentChainForCreation = '';
-}
-
-function confirmMnemonicSavedOther() {
-  clearInterval(mnemonicCreationTimerOther);
-  
-  const chainName = document.getElementById('currentChainName').textContent;
-  const wallet = otherChainsWallets[currentChainForCreation];
-  
-  if (wallet) {
-    // Atualizar saldo
-    updateCurrentChainBalance();
-    
-    showNotification(`✅ Wallet ${chainName} criada! Endereço: ${wallet.wallet.address.substring(0, 10)}...`, 'success');
-    showNotification(`⚠️ SALVE SUA CHAVE PRIVADA E FRASE MNEMÔNICA DA ${chainName.toUpperCase()}!`, 'warning');
-  }
-  
-  closeMnemonicCreationModalOther();
-}
-
-// RESTAURAR WALLET PARA OUTRA CHAIN
-function restoreWalletForChain(chainName) {
-  currentChainForCreation = chainName.toLowerCase();
-  
-  const modal = document.getElementById('mnemonicModalOther');
-  const chainNameElement = document.getElementById('restoreChainName');
-  
-  chainNameElement.textContent = chainName;
-  modal.classList.add('active');
-  
-  document.getElementById('mnemonicPhraseOther').value = '';
-  document.getElementById('privateKeyOther').value = '';
-}
-
-function closeMnemonicModalOther() {
-  const modal = document.getElementById('mnemonicModalOther');
-  modal.classList.remove('active');
-  currentChainForCreation = '';
-}
-
-function confirmRestoreOther() {
-  const mnemonicPhraseInput = document.getElementById('mnemonicPhraseOther').value.trim();
-  const privateKeyInput = document.getElementById('privateKeyOther').value.trim();
-  
-  if (!mnemonicPhraseInput && !privateKeyInput) {
-    showNotification('Por favor, insira a frase mnemônica ou chave privada.', 'error');
-    return;
-  }
-  
-  try {
-    let wallet;
-    
-    if (mnemonicPhraseInput) {
-      if (!ethers.Mnemonic.isValidMnemonic(mnemonicPhraseInput)) {
-        showNotification('Frase mnemônica inválida. Verifique as palavras.', 'error');
-        return;
+      const priceMultipliers = {
+        polygon: 0.8,
+        ethereum: 3500,
+        bsc: 300,
+        avalanche: 35,
+        arbitrum: 3500,
+        optimism: 3500,
+        base: 3500,
+        harmony: 0.02,
+        fantom: 0.3,
+        cronos: 0.1,
+        kava: 0.7,
+        celo: 0.5,
+        moonbeam: 0.3,
+        moonriver: 20,
+        gnosis: 100,
+        fuse: 0.05,
+        metis: 40,
+        polygonzkevm: 3500,
+        linea: 3500,
+        scroll: 3500
+      };
+      
+      const multiplier = priceMultipliers[chain.id] || 1;
+      const usdAmount = parseFloat(balance) * multiplier;
+      const usdValue = `≈ $${usdAmount.toFixed(2)} USD`;
+      
+      const valueElement = document.getElementById('currentChainValue');
+      if (valueElement) {
+        valueElement.textContent = usdValue;
       }
-      wallet = ethers.Wallet.fromPhrase(mnemonicPhraseInput);
-    } else {
-      let privateKey = privateKeyInput.replace(/\s/g, '');
-      if (!privateKey.startsWith('0x')) {
-        privateKey = '0x' + privateKey;
+    }
+  },
+  
+  // Obter chain por ID
+  getChainById: function(chainId) {
+    return blockchains.find(c => c.id === chainId);
+  },
+  
+  // Obter chain por nome
+  getChainByName: function(name) {
+    return blockchains.find(c => c.name.toLowerCase() === name.toLowerCase());
+  },
+  
+  // Selecionar blockchain
+  selectBlockchain: function(chainId) {
+    this.currentSelectedChain = chainId;
+    
+    // Atualizar botões ativos
+    document.querySelectorAll('.blockchain-button').forEach(btn => {
+      btn.classList.remove('active');
+      if (btn.getAttribute('data-chain') === chainId) {
+        btn.classList.add('active');
       }
-      wallet = new ethers.Wallet(privateKey);
+    });
+    
+    // Atualizar exibição
+    this.updateCurrentChainDisplay();
+    
+    return this.getChainById(chainId);
+  },
+  
+  // Inicializar botões
+  initializeBlockchainButtons: function() {
+    const container = document.getElementById('blockchainButtonsContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    blockchains.forEach(chain => {
+      const button = document.createElement('button');
+      button.className = 'blockchain-button';
+      button.setAttribute('data-chain', chain.id);
+      button.innerHTML = `
+        <i class="${chain.icon}" style="margin-right: 5px;"></i>
+        ${chain.name}
+      `;
+      
+      if (chain.id === this.currentSelectedChain) {
+        button.classList.add('active');
+      }
+      
+      button.addEventListener('click', () => {
+        const selectedChain = this.selectBlockchain(chain.id);
+        if (window.switchTab) {
+          window.switchTab('walletTab');
+        }
+        
+        // Notificação
+        if (window.showNotification) {
+          window.showNotification(`Dashboard ${selectedChain.name} carregado`, 'success');
+        }
+      });
+      
+      container.appendChild(button);
+    });
+  },
+  
+  // Gerar saldo aleatório
+  generateRandomBalance: function(chainId) {
+    const min = 0.001;
+    const max = 100;
+    const randomBalance = (Math.random() * (max - min) + min).toFixed(4);
+    return this.updateChainBalance(chainId, randomBalance);
+  },
+  
+  // Obter todas as blockchains
+  getAllBlockchains: function() {
+    return blockchains;
+  },
+  
+  // Verificar se tem wallet
+  hasWallet: function(chainId) {
+    return !!this.otherChainsWallets[chainId] || 
+           (chainId === 'polygon' && !!window.currentWallet);
+  },
+  
+  // Adicionar wallet
+  addWallet: function(chainId, walletData) {
+    this.otherChainsWallets[chainId] = walletData;
+    
+    // Gerar saldo inicial
+    if (!this.realChainBalances[chainId] || this.realChainBalances[chainId] === '0.0000') {
+      this.generateRandomBalance(chainId);
     }
-    
-    otherChainsWallets[currentChainForCreation] = {
-      wallet: wallet,
-      mnemonic: mnemonicPhraseInput || ''
-    };
-    
-    localStorage.setItem(`exclusiveWallet_${currentChainForCreation}`, wallet.privateKey);
-    if (mnemonicPhraseInput) {
-      localStorage.setItem(`exclusiveWalletMnemonic_${currentChainForCreation}`, mnemonicPhraseInput);
-    }
-    
-    // Gerar saldo aleatório para demonstração
-    const randomBalance = (Math.random() * 10).toFixed(4);
-    realChainBalances[currentChainForCreation] = randomBalance;
-    
-    closeMnemonicModalOther();
-    showNotification(`✅ Wallet ${currentChainForCreation.charAt(0).toUpperCase() + currentChainForCreation.slice(1)} restaurada! Endereço: ${wallet.address.substring(0, 10)}...`, 'success');
-    
-    // Atualizar saldo exibido
-    updateCurrentChainBalance();
-    
-  } catch (error) {
-    console.error('Erro ao restaurar wallet:', error);
-    showNotification('Erro ao restaurar wallet: ' + error.message, 'error');
+  },
+  
+  // Remover wallet
+  removeWallet: function(chainId) {
+    delete this.otherChainsWallets[chainId];
+    this.updateChainBalance(chainId, '0.0000');
+  },
+  
+  // Obter saldo atual
+  getCurrentBalance: function() {
+    return this.realChainBalances[this.currentSelectedChain] || '0.0000';
+  },
+  
+  // Obter chain atual
+  getCurrentChain: function() {
+    return this.getChainById(this.currentSelectedChain);
   }
-}
+};
 
-// FUNÇÕES PARA OUTRAS CHAINS
-function showReceiveModalOther(chainName) {
-  const chainId = chainName.toLowerCase();
-  const wallet = otherChainsWallets[chainId];
-  
-  if (!wallet) {
-    showNotification(`Crie ou restaure uma wallet ${chainName} primeiro`, 'error');
-    return;
-  }
-  
-  showNotification(`QR Code para recebimento na ${chainName} (simulado)`, 'info');
-}
-
-function showSendModalOther(chainName) {
-  showNotification(`Envio na ${chainName} (simulado)`, 'info');
-}
-
-async function refreshBalanceOther(chainName) {
-  const chainId = chainName.toLowerCase();
-  showNotification(`Consultando saldo na ${chainName}...`, 'info');
-  
-  // Atualizar saldo real
-  await updateCurrentChainBalance();
-  
-  showNotification(`Saldo ${chainName} atualizado!`, 'success');
-}
-
-function copyQRAddressOther(chainName) {
-  const chainId = chainName.toLowerCase();
-  const wallet = otherChainsWallets[chainId];
-  
-  if (!wallet) {
-    showNotification(`Nenhuma wallet ${chainName} encontrada`, 'error');
-    return;
-  }
-  
-  navigator.clipboard.writeText(wallet.wallet.address)
-    .then(() => showNotification(`Endereço ${chainName} copiado!`, 'success'))
-    .catch(() => showNotification('Erro ao copiar endereço', 'error'));
-}
-
-function cancelSendOther(chainName) {
-  showNotification(`Envio na ${chainName} cancelado`, 'info');
-}
-
-function estimateGasOther(chainName) {
-  showNotification(`Estimando gás na ${chainName}... (simulado)`, 'info');
-  setTimeout(() => {
-    showNotification(`Estimativa de gás ${chainName} calculada`, 'success');
-  }, 1000);
-}
-
-function sendTransactionOther(chainName) {
-  showNotification(`Enviando transação na ${chainName}... (simulado)`, 'info');
-  setTimeout(() => {
-    showNotification(`✅ Transação ${chainName} enviada com sucesso!`, 'success');
-  }, 2000);
-}
-
-function loadMoreTransactionsOther(chainName) {
-  showNotification(`Carregando mais transações ${chainName}...`, 'info');
-  setTimeout(() => {
-    showNotification(`Transações ${chainName} carregadas`, 'success');
-  }, 1000);
-}
+// Inicializar quando o DOM estiver pronto
+document.addEventListener('DOMContentLoaded', function() {
+  BlockchainManager.initialize();
+});
