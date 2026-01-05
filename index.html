@@ -4507,7 +4507,39 @@ scope:rpc
         communicationTab.appendChild(explanation);
       }
     }
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Verificar URL atual
+  console.log('URL atual:', window.location.href);
+  
+  // Tentar carregar CSS dinamicamente para ver erro
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'exclusivelayer/assets/css/style.css';
+  link.onerror = function() {
+    console.error('❌ CSS não encontrado em:', link.href);
+    console.log('📁 Estrutura atual:');
+    
+    // Testar vários caminhos
+    const testPaths = [
+      'assets/css/style.css',
+      './assets/css/style.css',
+      '/assets/css/style.css',
+      'css/style.css',
+      'style.css'
+    ];
+    
+    testPaths.forEach(path => {
+      const testLink = document.createElement('link');
+      testLink.rel = 'stylesheet';
+      testLink.href = path;
+      document.head.appendChild(testLink);
+      console.log('Testando:', path);
+    });
+  };
+  document.head.appendChild(link);
+});
+</script>
   </script>
 
   <!-- Linha divisória de luxo e instruções finais -->
