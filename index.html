@@ -1,111 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Exclusive Wallet Premium — Sistema Polygon com RPC Infra Identity</title>
+  <title>Exclusive Wallet Premium</title>
   
-  <!-- Bibliotecas externas -->
+  <!-- CDNs (mantenha apenas essenciais) -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.4/dist/ethers.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- Fontes -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   
-  <!-- CSS EMBUTIDO - FUNCIONA 100% -->
-  <style>
-  /* TODO O CSS ORIGINAL VEM AQUI - EU VOU TE PASSAR */
-  :root {
-    --gold-primary: #D4AF37;
-    --gold-secondary: #F4E4B8;
-    --gold-accent: #B8860B;
-    --gold-dark: #8B6914;
-    --platinum: #E5E4E2;
-    --carbon: #1A1A1A;
-    --obsidian: #0A0A0A;
-    --emerald: #046307;
-    --sapphire: #0F52BA;
-    --ruby: #E0115F;
-    --diamond: #B9F2FF;
-    --transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    --shadow-luxury: 0 25px 50px rgba(0, 0, 0, 0.1), 0 15px 30px rgba(0, 0, 0, 0.08);
-    --shadow-gold: 0 8px 32px rgba(212, 175, 55, 0.25);
-    --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F4E4B8 50%, #B8860B 100%);
-    --gradient-dark: linear-gradient(135deg, #1A1A1A 0%, #0A0A0A 100%);
-    --gradient-card: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(244, 228, 184, 0.05) 100%);
-    --wet-mirror: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 25%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.05) 75%, rgba(255, 255, 255, 0.1) 100%);
-  }
-  
-  .theme-luxury {
-    --primary-color: #D4AF37;
-    --secondary-color: #F4E4B8;
-    --accent-color: #B8860B;
-    --background-primary: #0A0A0A;
-    --background-secondary: #1A1A1A;
-    --text-primary: #F0F0F0;
-    --text-secondary: #B0B0B0;
-    --container-bg: rgba(26, 26, 26, 0.95);
-    --container-border: rgba(212, 175, 55, 0.3);
-    --card-bg: rgba(30, 30, 30, 0.8);
-    --card-border: rgba(212, 175, 55, 0.2);
-    --success-color: #00C853;
-    --warning-color: #FFD700;
-    --error-color: #FF5252;
-  }
-  
-  .theme-light {
-    --primary-color: #D4AF37;
-    --secondary-color: #F4E4B8;
-    --accent-color: #B8860B;
-    --background-primary: #FFFFFF;
-    --background-secondary: #F8F8F8;
-    --text-primary: #1A1A1A;
-    --text-secondary: #555555;
-    --container-bg: rgba(255, 255, 255, 0.95);
-    --container-border: rgba(212, 175, 55, 0.3);
-    --card-bg: rgba(255, 255, 255, 0.9);
-    --card-border: rgba(212, 175, 55, 0.2);
-    --success-color: #00A859;
-    --warning-color: #E6B400;
-    --error-color: #E53935;
-  }
-  
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  }
-  
-  body {
-    background: var(--background-primary);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    color: var(--text-primary);
-    transition: var(--transition);
-    font-weight: 300;
-    position: relative;
-    overflow-x: hidden;
-  }
-  
-  /* CONTINUA... (preciso saber se você quer todo o CSS aqui) */
-  </style>
+  <!-- Arquivos locais -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="theme-luxury">
-  <!-- TODO O SEU HTML VEM AQUI -->
+  
+  <!-- CONTAINER PRINCIPAL -->
   <div class="wallet-container">
-    <!-- Seu conteúdo atual... -->
+    <!-- HEADER -->
+    <header>
+      <div class="logo">
+        <h1>Exclusive Wallet</h1>
+        <span>POLYGON PREMIUM IDENTITY</span>
+      </div>
+    </header>
+    
+    <!-- TELA DE LOGIN (simples) -->
+    <div id="login-screen">
+      <div class="wallet-header">
+        <h2>Sistema Polygon Premium Identity</h2>
+        <p>Identidade única para gerenciamento completo</p>
+      </div>
+      
+      <div class="login-options">
+        <div class="card">
+          <h3><i class="fas fa-key"></i> Conectar com Chave Privada</h3>
+          <input type="password" id="privateKey" placeholder="0x...">
+          <button class="btn primary" id="connectBtn">Conectar</button>
+        </div>
+        
+        <div class="card">
+          <h3><i class="fas fa-plus-circle"></i> Nova Carteira</h3>
+          <input type="password" id="password" placeholder="Senha opcional">
+          <button class="btn primary" id="createBtn">Criar Nova</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- DASHBOARD (inicialmente escondido) -->
+    <div id="dashboard" class="hidden">
+      <!-- Abas e conteúdo serão carregados via JS -->
+    </div>
   </div>
   
-  <!-- JavaScript (também pode ser embutido se necessário) -->
-  <script>
-  // Código JavaScript básico aqui
-  console.log('Página carregada');
-  </script>
+  <!-- MODAIS BÁSICOS -->
+  <div id="modal-overlay" class="hidden"></div>
+  
+  <!-- SCRIPTS LOCAIS -->
+  <script src="js/blockchain.js"></script>
+  <script src="js/wallet.js"></script>
+  <script src="js/communication.js"></script>
+  <script src="js/identity.js"></script>
+  <script src="js/main.js"></script>
 </body>
 </html>
